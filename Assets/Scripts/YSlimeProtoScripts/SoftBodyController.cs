@@ -1,26 +1,40 @@
 using UnityEngine;
 using UnityEngine.U2D;
+using System.Collections.Generic;
 
 public class SoftBodyController : MonoBehaviour
 {
+    #region consts
+    private const float splineOffset = 0.1f;
+    #endregion
 
     #region fields
-    [SerializeField]
-    public SpriteShapeController spriteShape;
-    [SerializeField]
-    public Transform[] points;
+    [SerializeField] public SpriteShapeController spriteShape;
+    [SerializeField] public Transform[] points;
+    
+    [SerializeField] private List<SpringJoint2D> outerSprings = new List<SpringJoint2D>();
+    [SerializeField] private List<DistanceJoint2D> outerRods = new List<DistanceJoint2D>();
+    [SerializeField] private List<SpringJoint2D> innerSprings = new List<SpringJoint2D>();
 
-    [SerializeField]
-    private SpringJoint2D[] outerSprings;
-    [SerializeField]
-    private DistanceJoint2D outerRods;
-    [SerializeField]
-    private SpringJoint2D[] innerSprings;
-    [SerializeField]
-    private DistanceJoint2D[] innerRods;
+    [Range(0, 1)]
+    public float innerDis, outerDis, damping;
+
+    [Range(0,10)]
+    public float frequency;
+
     #endregion
 
     #region callbacks
+    private void Awake()
+    {
+        UpdateVertices();
+        GetJoints();
+    }
+    private void Update()
+    {
+
+        UpdateVertices();
+    }
     #endregion
 
     #region privateMethods
@@ -31,7 +45,25 @@ public class SoftBodyController : MonoBehaviour
 
             //when softbody controller is setup pull radius from there, this is stupid
             float colliderRadius = points[i].gameObject.GetComponent<CircleCollider2D>().radius;
-            spriteShape.spline.SetPosition(i, (vertex - towardsCenter * colliderRadius));
+            try
+            {
+                spriteShape.spline.SetPosition(i, (vertex - towardsCenter * colliderRadius));
+            }
+            catch 
+            {
+                Debug.Log("Spline points are too close.. recalculate");
+                spriteShape.spline.SetPosition(i, (vertex - towardsCenter * (colliderRadius + splineOffset)));
+            }
+
+            Vector2 lt = spriteShape.spline.GetLeftTangent(i);
+
+            Vector2 newRt = Vector2.Perpendicular(towardsCenter) * lt.magnitude;
+            Vector2 newLt = Vector2.zero - newRt;
+
+            spriteShape.spline.SetLeftTangent(i, newLt);
+            spriteShape.spline.SetRightTangent(i, newRt);
+
+            
         }
     }
 
@@ -42,12 +74,40 @@ public class SoftBodyController : MonoBehaviour
         {
             foreach (SpringJoint2D spring in point.gameObject.GetComponents<SpringJoint2D>())
             {
-                
-
+                Debug.Log($"spring connected body = {spring.connectedBody} && gameobject = {gameObject}" );
+                if (spring.connectedBody.gameObject  == gameObject)
+                {
+                    innerSprings.Add(spring);
+                }
+                else outerSprings.Add(spring);
             }
+            outerRods.Add(point.gameObject.GetComponent<DistanceJoint2D>());
         }
     }
-    private void UpdateDistance() { } 
+
+    private void GetInitSprings() 
+    {
+        innerDis = innerSprings[0].distance;
+        outerDis = outerSprings[0].distance;
+        frequency = outerSprings[0].frequency;
+        damping = outerSprings[0].dampingRatio;
+        
+    }
+
+    private void UpdateSprings() 
+    {
+        for(int i = 0; i < innerSprings.Count; i++)
+        {
+            innerSprings[i].frequency = frequency;
+            innerSprings[i].dampingRatio = damping;
+        }
+        for(int i = 0;i < outerSprings.Count; i++)
+        {
+            outerSprings[i].frequency = frequency;
+            outerSprings[i].dampingRatio = damping;
+        }
+    }
+    private void UpdateDistance() { }
     #endregion
 
 }
