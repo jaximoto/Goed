@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4b6ed98a9033d964ebb99bb49d3899da
+guid: 73683dbaf34289d488a2bac74e6abd6e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8069619478552258361
-    second: slime1_0
+      213: -7180943298947508083
+    second: slimeEdge_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: slime1_0
+      name: slimeEdge_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 64
-        height: 64
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9372eab392c0dff60800000000000000
-      internalID: 8069619478552258361
+      spriteID: d88130aad1a285c90800000000000000
+      internalID: -7180943298947508083
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      slime1_0: 8069619478552258361
+      slimeEdge_0: -7180943298947508083
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
