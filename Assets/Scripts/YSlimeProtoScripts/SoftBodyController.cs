@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.U2D;
 using System.Collections.Generic;
 
@@ -16,24 +17,26 @@ public class SoftBodyController : MonoBehaviour
     [SerializeField] private List<DistanceJoint2D> outerRods = new List<DistanceJoint2D>();
     [SerializeField] private List<SpringJoint2D> innerSprings = new List<SpringJoint2D>();
 
-    [Range(0, 1)]
-    public float innerDis, outerDis, damping;
+    [Range(0, 3)]
+    public float targetScale, scaleSpeed;
 
-    [Range(0,10)]
-    public float frequency;
+    #region 
+    #endregion
+
 
     #endregion
 
     #region callbacks
     private void Awake()
     {
+        MatchTargetScale();
         UpdateVertices();
         GetJoints();
     }
     private void Update()
     {
-
         UpdateVertices();
+        UpdateSize();
     }
     #endregion
 
@@ -85,13 +88,25 @@ public class SoftBodyController : MonoBehaviour
         }
     }
 
+    private void MatchTargetScale()
+    {
+        targetScale = transform.localScale.x;
+    }
+
+    //this already has some dumbassery. Note, calling the vector conversion each time just to check 
+    private void UpdateSize() 
+    {
+        if (targetScale != transform.localScale.x) transform.localScale = new Vector3(targetScale, targetScale, targetScale);
+    }
+    
+    
+    /*
     private void GetInitSprings() 
     {
         innerDis = innerSprings[0].distance;
         outerDis = outerSprings[0].distance;
         frequency = outerSprings[0].frequency;
         damping = outerSprings[0].dampingRatio;
-        
     }
 
     private void UpdateSprings() 
@@ -107,7 +122,7 @@ public class SoftBodyController : MonoBehaviour
             outerSprings[i].dampingRatio = damping;
         }
     }
-    private void UpdateDistance() { }
+    */
     #endregion
 
 }
