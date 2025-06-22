@@ -37,6 +37,7 @@ public class SoftBodyController : MonoBehaviour
     {
         UpdateVertices();
         UpdateSize();
+
     }
     #endregion
 
@@ -94,12 +95,20 @@ public class SoftBodyController : MonoBehaviour
     }
 
     //this already has some dumbassery. Note, calling the vector conversion each time just to check 
+    //this dumbassery is now outdated.
+    //tfw we got new dumbassery
     private void UpdateSize() 
     {
         if (targetScale != transform.localScale.x) transform.localScale = new Vector3(targetScale, targetScale, targetScale);
     }
+    //this is crazy. why no slow grow
     
-    
+    /*
+    private void SlowGrow()
+    {
+        transform.localScale += new Vector3(transform.localScale.x + Time.deltaTime, transform.localScale.y + Time.deltaTime, transform.localScale.z + Time.deltaTime);
+    }
+    */
     /*
     private void GetInitSprings() 
     {
