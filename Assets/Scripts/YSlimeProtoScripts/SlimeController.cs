@@ -32,7 +32,7 @@ public class SlimeController : MonoBehaviour
     // Collison
     private bool _cachedQueryStartInColliders;
     public LayerMask groundCheckIgnoreLayers;
-    public CapsuleCollider2D _col;
+    public CircleCollider2D _col;
     public float GroundDistance;
     public struct FrameInput
     {
@@ -46,7 +46,7 @@ public class SlimeController : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _col = GetComponent<CapsuleCollider2D>();
+        _col = GetComponent<CircleCollider2D>();
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
         points = new List<GameObject>();
@@ -90,13 +90,11 @@ public class SlimeController : MonoBehaviour
     private void CheckCollisions()
     {
         Physics2D.queriesStartInColliders = false;
-
-        bool groundHit = Physics2D.CapsuleCast
+        Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+        bool groundHit = Physics2D.CircleCast
             (
-            _col.bounds.center,
-            _col.size,
-            _col.direction,
-            0,
+            origin,
+            _col.radius,
             Vector2.down,
             GroundDistance,
             ~groundCheckIgnoreLayers.value
@@ -145,7 +143,7 @@ public class SlimeController : MonoBehaviour
 
     private void Gravity()
     {
-        if(!_grounded && _frameVelocity.y <= 0f)
+        if(_grounded && _frameVelocity.y <= 0f)
         {
             _frameVelocity.y = GroundedGravity;
         }
