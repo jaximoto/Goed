@@ -62,6 +62,7 @@ public class SoftBodyController : MonoBehaviour
             Vector2 lt = spriteShape.spline.GetLeftTangent(i);
 
             Vector2 newRt = Vector2.Perpendicular(towardsCenter) * lt.magnitude;
+            Debug.Log($"lt magnitude is {lt.magnitude}");
             Vector2 newLt = Vector2.zero - newRt;
 
             spriteShape.spline.SetLeftTangent(i, newLt);
