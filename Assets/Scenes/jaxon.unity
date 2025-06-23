@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 253619253}
   - component: {fileID: 253619252}
   - component: {fileID: 253619251}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,9 +270,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 796906908}
   - component: {fileID: 796906907}
   - component: {fileID: 796906906}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,9 +646,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 910533146}
   - component: {fileID: 910533145}
   - component: {fileID: 910533144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,9 +885,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1262,10 +1262,10 @@ GameObject:
   - component: {fileID: 1380225286}
   - component: {fileID: 1380225285}
   - component: {fileID: 1380225284}
-  - component: {fileID: 1380225290}
   - component: {fileID: 1380225288}
+  - component: {fileID: 1380225291}
   - component: {fileID: 1380225289}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1284,7 +1284,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef9dd2a7eed3c34a9bcddd7e8fdb1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rolltiplier: 1
+  rolltiplier: 5
+  points: []
+  Speed: 5
+  MaxSpeed: 100
+  Acceleration: 10
+  GroundDeceleration: 5
+  AirDeceleration: 1
+  _grounded: 0
+  groundCheckIgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  _col: {fileID: 0}
+  GroundDistance: 1.5
 --- !u!50 &1380225285
 Rigidbody2D:
   serializedVersion: 5
@@ -1300,7 +1312,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1388,7 +1400,6 @@ Transform:
   - {fileID: 1638599006}
   - {fileID: 796906912}
   - {fileID: 1706921582}
-  - {fileID: 1564507794}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1380225288
@@ -1398,7 +1409,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380225283}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -1447,233 +1458,43 @@ RelativeJoint2D:
   m_AutoConfigureOffset: 1
   m_LinearOffset: {x: 0, y: 0.75}
   m_AngularOffset: -0
---- !u!114 &1380225290
-MonoBehaviour:
+--- !u!70 &1380225291
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380225283}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea590770ded355c45ba9f909d30ce8d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteShape: {fileID: 1564507795}
-  points:
-  - {fileID: 1662523775}
-  - {fileID: 253619257}
-  - {fileID: 910533150}
-  - {fileID: 1741125739}
-  - {fileID: 1853906240}
-  - {fileID: 1638599006}
-  - {fileID: 796906912}
-  - {fileID: 1706921582}
-  outerSprings: []
-  outerRods: []
-  innerSprings: []
-  innerDis: 0
-  outerDis: 0
-  damping: 0
-  frequency: 0
---- !u!1 &1564507793
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1564507794}
-  - component: {fileID: 1564507796}
-  - component: {fileID: 1564507795}
-  m_Layer: 0
-  m_Name: SlimeSpriteShape
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1564507794
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564507793}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1380225287}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1564507795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564507793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90539df1cd5704abcb25fec9f3f5f84b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Spline:
-    m_IsOpenEnded: 0
-    m_ControlPoints:
-    - position: {x: 0, y: -2, z: 0}
-      leftTangent: {x: 0.4736564, y: 0, z: 0}
-      rightTangent: {x: -0.5223336, y: 0, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: -1.4888386, y: -1.3466291, z: 0}
-      leftTangent: {x: 0.3231541, y: -0.48086178, z: 0}
-      rightTangent: {x: -0.26197755, y: 0.38264793, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: -2, y: 0, z: 0}
-      leftTangent: {x: -0.014101338, y: -0.47991973, z: -0}
-      rightTangent: {x: 0.0147175, y: 0.50088996, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: -1.3849016, y: 1.3717215, z: 0}
-      leftTangent: {x: -0.3535619, y: -0.3551075, z: -0}
-      rightTangent: {x: 0.35766208, y: 0.3592256, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 0, y: 2, z: 0}
-      leftTangent: {x: -0.5069047, y: -0.0035858867, z: 0}
-      rightTangent: {x: 0.49663958, y: 0.0035132703, z: -0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1.3654294, y: 1.4037021, z: 0}
-      leftTangent: {x: -0.3534308, y: 0.34892672, z: -0}
-      rightTangent: {x: 0.3654141, y: -0.3607573, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 2, y: 0, z: 0}
-      leftTangent: {x: -0.011316654, y: 0.5133666, z: -0}
-      rightTangent: {x: 0.011287211, y: -0.5120309, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1.4293907, y: -1.4265807, z: 0}
-      leftTangent: {x: 0.29715264, y: 0.4152447, z: 0}
-      rightTangent: {x: -0.29982364, y: -0.41966963, z: 0}
-      mode: 1
-      height: 0.1
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-  m_SpriteShape: {fileID: 11400000, guid: 409cd92110dd7fc428c5a9cd5620f17b, type: 2}
-  m_FillPixelPerUnit: 100
-  m_StretchTiling: 0
-  m_SplineDetail: 16
-  m_AdaptiveUV: 1
-  m_StretchUV: 0
-  m_WorldSpaceUV: 1
-  m_CornerAngleThreshold: 30
-  m_ColliderDetail: 16
-  m_ColliderOffset: 0
-  m_UpdateCollider: 1
-  m_EnableTangents: 0
-  m_GeometryCached: 0
-  m_UTess2D: 1
-  m_UpdateShadow: 0
-  m_ShadowDetail: 16
-  m_ShadowOffset: 0.5
-  m_BoundsScale: 2
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
-  m_ColliderSegment: []
-  m_ShadowSegment: []
---- !u!1971053207 &1564507796
-SpriteShapeRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564507793}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: a08eaf21cd301824eb8f422230625f90, type: 3}
-  m_Sprites:
-  - {fileID: 21300000, guid: de2a4cb755ae0404e9f38c744b1b37e0, type: 3}
-  - {fileID: 21300000, guid: a08eaf21cd301824eb8f422230625f90, type: 3}
-  - {fileID: 21300000, guid: 73683dbaf34289d488a2bac74e6abd6e, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  m_LocalAABB:
-    m_Center: {x: 0.0000026226044, y: -0.00000047683716, z: 0}
-    m_Extent: {x: 2.031992, y: 2.0319996, z: 0}
-  m_SpriteSortPoint: 0
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1}
+  m_Direction: 0
 --- !u!1 &1638598998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1511,7 @@ GameObject:
   - component: {fileID: 1638599002}
   - component: {fileID: 1638599001}
   - component: {fileID: 1638599000}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1710,9 +1531,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1929,7 +1750,7 @@ GameObject:
   - component: {fileID: 1662523771}
   - component: {fileID: 1662523770}
   - component: {fileID: 1662523769}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1949,9 +1770,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2168,7 +1989,7 @@ GameObject:
   - component: {fileID: 1706921585}
   - component: {fileID: 1706921584}
   - component: {fileID: 1706921583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2286,9 +2107,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2407,7 +2228,7 @@ GameObject:
   - component: {fileID: 1741125735}
   - component: {fileID: 1741125734}
   - component: {fileID: 1741125733}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2427,9 +2248,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2646,7 +2467,7 @@ GameObject:
   - component: {fileID: 1853906236}
   - component: {fileID: 1853906235}
   - component: {fileID: 1853906234}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: point (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2666,9 +2487,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 0.25
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
