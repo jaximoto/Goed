@@ -23,7 +23,16 @@ public class ProSlimeBuilder : MonoBehaviour
     #endregion
 
     #region designer methods
-    [ContextMenu("Atomize")]
+    [ContextMenu("Polymorph Slime")]
+    void PolymorphSlime()
+    {
+        Atomize();
+        GiveForm();
+    }
+    
+    
+    
+    
     void Atomize()
     {
         LoadPrefab();
@@ -31,6 +40,13 @@ public class ProSlimeBuilder : MonoBehaviour
         SortVertices();
         PopulateParticles();
     }
+
+    void GiveForm()
+    {
+        GiveBones();
+        GiveSkin();
+    }
+
     #endregion
 
 
@@ -85,7 +101,6 @@ public class ProSlimeBuilder : MonoBehaviour
         }   
     }
 
-    [ContextMenu("GiveBones")]
     void GiveBones()
     {
         for (int i = 0; i < points.Count; i++)
@@ -112,7 +127,7 @@ public class ProSlimeBuilder : MonoBehaviour
         }
     }
 
-    [ContextMenu("GiveSkin"), ExecuteInEditMode]
+    [ExecuteInEditMode]
     void GiveSkin()
     {
         DestroyImmediate(GetComponent<SpriteRenderer>());
@@ -124,10 +139,23 @@ public class ProSlimeBuilder : MonoBehaviour
         {
             ssCont.spline.InsertPointAt(i, sortedVerts[i]);
             ssCont.spline.SetTangentMode(i, ShapeTangentMode.Continuous);
+            ssCont.spline.SetLeftTangent(i, -Vector2.Perpendicular(sortedVerts[i]));
+            ssCont.spline.SetRightTangent(i, Vector2.Perpendicular(sortedVerts[i]));
             ssCont.spline.SetHeight(i, 0);
         }
         ssCont.spriteShape = Resources.Load<SpriteShape>(skin);
+        ssCont.RefreshSpriteShape();
     }
 
+
+    [ContextMenu("Check Tangents")]
+    void CheckTangents()
+    {
+        Spline spline = GetComponent<SpriteShapeController>().spline; 
+        for (int i = 0;i < spline.GetPointCount() ;i++) 
+        {
+            Debug.Log($"spline at position {spline.GetPosition(i)} has rtan = {spline.GetRightTangent(i)} and ltan = {spline.GetLeftTangent(i)} ");
+        }
+    }
     #endregion
 }
