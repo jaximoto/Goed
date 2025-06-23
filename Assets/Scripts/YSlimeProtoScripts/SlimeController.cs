@@ -15,13 +15,19 @@ public class SlimeController : MonoBehaviour
 
     // Horizontal Movement
     public float Speed = 1.0f;
-    public float MaxSpeed = 100.0f;
+    public float MaxSpeed = 14f;
     public float Acceleration = 0.5f;
-    public float GroundDeceleration = 0.5f;
-    public float AirDeceleration = 0.25f;
+    public float GroundDeceleration = 60f;
+    public float AirDeceleration = 30f;
 
     // Vertical Movement
     public bool _grounded;
+    public bool _endedJumpEarly;
+    public float GroundedGravity =-1.5f;
+    public float FallAcceleration = 50f;
+    public float JumpEndEarlyGravityModifier = 3f;
+    public float MaxFallSpeed = 40.0f;
+
 
     // Collison
     private bool _cachedQueryStartInColliders;
@@ -77,6 +83,7 @@ public class SlimeController : MonoBehaviour
     {
         CheckCollisions();
         HandleHorizontal();
+        Gravity();
         ApplyMovement();
     }
 
@@ -133,6 +140,22 @@ public class SlimeController : MonoBehaviour
         foreach(GameObject child in points)
         {
             child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
+        }
+    }
+
+    private void Gravity()
+    {
+        if(!_grounded && _frameVelocity.y <= 0f)
+        {
+            _frameVelocity.y = GroundedGravity;
+        }
+        else
+        {
+            var inAirGravity = FallAcceleration;
+            if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= JumpEndEarlyGravityModifier;
+            //falling
+            //else if(frameVelocity.y < 0) Falling?.Invoke();
+            _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
     }
 

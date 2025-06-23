@@ -272,7 +272,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -354,10 +354,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253619249}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 910533143}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -365,7 +365,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.7499999
   m_MaxDistanceOnly: 0
 --- !u!58 &253619255
 CircleCollider2D:
@@ -648,7 +648,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -730,10 +730,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796906904}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1706921587}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -741,7 +741,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.75
   m_MaxDistanceOnly: 0
 --- !u!58 &796906910
 CircleCollider2D:
@@ -887,7 +887,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -969,10 +969,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910533142}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1741125732}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -980,7 +980,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.75
   m_MaxDistanceOnly: 0
 --- !u!58 &910533148
 CircleCollider2D:
@@ -1287,11 +1287,16 @@ MonoBehaviour:
   rolltiplier: 5
   points: []
   Speed: 5
-  MaxSpeed: 100
-  Acceleration: 10
-  GroundDeceleration: 5
-  AirDeceleration: 1
+  MaxSpeed: 14
+  Acceleration: 120
+  GroundDeceleration: 60
+  AirDeceleration: 30
   _grounded: 0
+  _endedJumpEarly: 0
+  GroundedGravity: -1.5
+  FallAcceleration: 50
+  JumpEndEarlyGravityModifier: 3
+  MaxFallSpeed: 40
   groundCheckIgnoreLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -1312,7 +1317,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1533,7 +1538,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1615,10 +1620,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1638598998}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 796906905}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -1626,7 +1631,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.7499999
   m_MaxDistanceOnly: 0
 --- !u!58 &1638599004
 CircleCollider2D:
@@ -1772,7 +1777,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1854,10 +1859,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662523767}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 253619250}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -1865,7 +1870,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.75
   m_MaxDistanceOnly: 0
 --- !u!58 &1662523773
 CircleCollider2D:
@@ -2081,10 +2086,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706921581}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1662523768}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -2092,7 +2097,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.7499999
   m_MaxDistanceOnly: 0
 --- !u!50 &1706921587
 Rigidbody2D:
@@ -2109,7 +2114,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2250,7 +2255,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2332,10 +2337,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741125731}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1853906233}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -2343,7 +2348,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.7499999
   m_MaxDistanceOnly: 0
 --- !u!58 &1741125737
 CircleCollider2D:
@@ -2489,7 +2494,7 @@ Rigidbody2D:
   m_Mass: 0.1
   m_LinearDamping: 0.05
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2571,10 +2576,10 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853906232}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1638598999}
+  m_ConnectedRigidBody: {fileID: 1380225285}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
@@ -2582,7 +2587,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.5740251
+  m_Distance: 0.75
   m_MaxDistanceOnly: 0
 --- !u!58 &1853906238
 CircleCollider2D:
