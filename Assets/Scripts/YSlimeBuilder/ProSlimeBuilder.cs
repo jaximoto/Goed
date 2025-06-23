@@ -149,7 +149,7 @@ public class ProSlimeBuilder : MonoBehaviour
             ssCont.spline.SetHeight(i, 0);
         }
         ssCont.spriteShape = Resources.Load<SpriteShape>(skin);
-        ssCont.RefreshSpriteShape();
+        //gameObject.SpriteShapeController.RefreshSpriteShape();
     }
 
 
@@ -160,9 +160,16 @@ public class ProSlimeBuilder : MonoBehaviour
         for (int i = 0;i < spline.GetPointCount() ;i++) 
         {
             Debug.Log($"spline at position {spline.GetPosition(i)} has rtan = {spline.GetRightTangent(i)} and ltan = {spline.GetLeftTangent(i)}");
+            Debug.Log($"spline at position {spline.GetPosition(i)} ");
         }
     }
 
+
+    [ContextMenu("updateTan")]
+    void UpdateTangents()
+    {
+       
+    }
 
     #endregion
 }
