@@ -68,14 +68,17 @@ public class SlimeController : MonoBehaviour
         _frameInput = new FrameInput
         {
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
-            JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
-            JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C)
+            JumpDown = Input.GetButtonDown("Jump"),
+            JumpHeld = Input.GetButton("Jump")
         };
 
+        /*
         if (_frameInput.JumpDown)
         {
-            
+            _jumpToConsume = true;
+            _timeJumpWasPressed = _time;
         }
+        */
     }
 
     // -------------------------------FIXED UPDATE METHODS--------------
