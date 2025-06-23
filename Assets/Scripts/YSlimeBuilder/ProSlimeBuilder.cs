@@ -115,7 +115,7 @@ public class ProSlimeBuilder : MonoBehaviour
     [ContextMenu("GiveSkin"), ExecuteInEditMode]
     void GiveSkin()
     {
-        Destroy(GetComponent<SpriteRenderer>());
+        DestroyImmediate(GetComponent<SpriteRenderer>());
         gameObject.AddComponent<SpriteShapeRenderer>();
         gameObject.AddComponent<SpriteShapeController>();
         SpriteShapeController ssCont = gameObject.GetComponent<SpriteShapeController>();
@@ -123,9 +123,8 @@ public class ProSlimeBuilder : MonoBehaviour
         for (int i = 0; i < points.Count; i++) 
         {
             ssCont.spline.InsertPointAt(i, sortedVerts[i]);
-            ssCont.spline.SetRightTangent(i, Vector2.Perpendicular(sortedVerts[i]));
-            ssCont.spline.SetLeftTangent(i, -Vector2.Perpendicular(sortedVerts[i]));
             ssCont.spline.SetTangentMode(i, ShapeTangentMode.Continuous);
+            ssCont.spline.SetHeight(i, 0);
         }
         ssCont.spriteShape = Resources.Load<SpriteShape>(skin);
     }
