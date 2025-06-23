@@ -50,7 +50,8 @@ public class SlimeController : MonoBehaviour
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
         points = new List<GameObject>();
-        for(int i = 0; i < transform.childCount; i++)
+        // exclude last child which doesnt have rigidbody
+        for(int i = 0; i < transform.childCount - 1; i++)
         {
             points.Add(transform.GetChild(i).gameObject);
         }
