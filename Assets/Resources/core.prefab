@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -168,11 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteShape: {fileID: 0}
   points: []
-  outerSprings: []
-  outerRods: []
-  innerSprings: []
-  targetScale: 0
-  scaleSpeed: 0
 --- !u!114 &-6356346795052267014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +188,11 @@ MonoBehaviour:
   GroundDeceleration: 0.5
   AirDeceleration: 0.25
   _grounded: 0
+  _endedJumpEarly: 0
+  GroundedGravity: -1.5
+  FallAcceleration: 50
+  JumpEndEarlyGravityModifier: 3
+  MaxFallSpeed: 40
   groundCheckIgnoreLayers:
     serializedVersion: 2
     m_Bits: 0

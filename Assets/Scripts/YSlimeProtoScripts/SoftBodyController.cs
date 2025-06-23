@@ -24,7 +24,7 @@ public class SoftBodyController : MonoBehaviour
     {        
         UpdateVertices();        
     }
-    private void Update()
+    private void LateUpdate()
     {
         UpdateVertices();        
     }
@@ -34,7 +34,7 @@ public class SoftBodyController : MonoBehaviour
     private void UpdateVertices() {
         for (int i = 0; i < points.Length; i++) {
             Vector2 vertex = points[i].localPosition;
-            Vector2 towardsCenter = (Vector2.zero - vertex).normalized;
+            Vector2 towardsCenter = -vertex.normalized;
 
             //when softbody controller is setup pull radius from there, this is stupid
             float colliderRadius = points[i].gameObject.GetComponent<CircleCollider2D>().radius;
@@ -52,7 +52,7 @@ public class SoftBodyController : MonoBehaviour
 
             Vector2 newRt = Vector2.Perpendicular(towardsCenter) * lt.magnitude;
             Debug.Log($"lt magnitude is {lt.magnitude}");
-            Vector2 newLt = Vector2.zero - newRt;
+            Vector2 newLt = -newRt;
 
             spriteShape.spline.SetLeftTangent(i, newLt);
             spriteShape.spline.SetRightTangent(i, newRt);
