@@ -15,18 +15,24 @@ public class SlimeController : MonoBehaviour
 
     // Horizontal Movement
     public float Speed = 1.0f;
-    public float MaxSpeed = 100.0f;
+    public float MaxSpeed = 14f;
     public float Acceleration = 0.5f;
-    public float GroundDeceleration = 0.5f;
-    public float AirDeceleration = 0.25f;
+    public float GroundDeceleration = 60f;
+    public float AirDeceleration = 30f;
 
     // Vertical Movement
     public bool _grounded;
+    public bool _endedJumpEarly;
+    public float GroundedGravity =-1.5f;
+    public float FallAcceleration = 50f;
+    public float JumpEndEarlyGravityModifier = 3f;
+    public float MaxFallSpeed = 40.0f;
+
 
     // Collison
     private bool _cachedQueryStartInColliders;
     public LayerMask groundCheckIgnoreLayers;
-    public CapsuleCollider2D _col;
+    public CircleCollider2D _col;
     public float GroundDistance;
     public struct FrameInput
     {
@@ -40,11 +46,12 @@ public class SlimeController : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _col = GetComponent<CapsuleCollider2D>();
+        _col = GetComponent<CircleCollider2D>();
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
         points = new List<GameObject>();
-        for(int i = 0; i < transform.childCount; i++)
+        // exclude last child which doesnt have rigidbody
+        for(int i = 0; i < transform.childCount - 1; i++)
         {
             points.Add(transform.GetChild(i).gameObject);
         }
@@ -62,14 +69,17 @@ public class SlimeController : MonoBehaviour
         _frameInput = new FrameInput
         {
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
-            JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
-            JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C)
+            JumpDown = Input.GetButtonDown("Jump"),
+            JumpHeld = Input.GetButton("Jump")
         };
 
+        /*
         if (_frameInput.JumpDown)
         {
-            
+            _jumpToConsume = true;
+            _timeJumpWasPressed = _time;
         }
+        */
     }
 
     // -------------------------------FIXED UPDATE METHODS--------------
@@ -77,19 +87,18 @@ public class SlimeController : MonoBehaviour
     {
         CheckCollisions();
         HandleHorizontal();
+        Gravity();
         ApplyMovement();
     }
 
     private void CheckCollisions()
     {
         Physics2D.queriesStartInColliders = false;
-
-        bool groundHit = Physics2D.CapsuleCast
+        Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+        bool groundHit = Physics2D.CircleCast
             (
-            _col.bounds.center,
-            _col.size,
-            _col.direction,
-            0,
+            origin,
+            _col.radius,
             Vector2.down,
             GroundDistance,
             ~groundCheckIgnoreLayers.value
@@ -133,6 +142,22 @@ public class SlimeController : MonoBehaviour
         foreach(GameObject child in points)
         {
             child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
+        }
+    }
+
+    private void Gravity()
+    {
+        if(_grounded && _frameVelocity.y <= 0f)
+        {
+            _frameVelocity.y = GroundedGravity;
+        }
+        else
+        {
+            var inAirGravity = FallAcceleration;
+            if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= JumpEndEarlyGravityModifier;
+            //falling
+            //else if(frameVelocity.y < 0) Falling?.Invoke();
+            _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
     }
 
