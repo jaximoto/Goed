@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ProSlimeBuilder : MonoBehaviour
 {
-    #region fields
+    #region ingredients
     //for gathering and sorting verices
     public SpriteRenderer rend;
     public List<Vector2> vertices;
@@ -17,23 +17,22 @@ public class ProSlimeBuilder : MonoBehaviour
 
     private GameObject core;
     private GameObject particle;
-
+    private GameObject coreAtom;
     //child List
     public List<GameObject> points;
     #endregion
 
-    #region designer methods
+    #region spells
     [ContextMenu("Polymorph Slime")]
     void PolymorphSlime()
     {
-        Atomize();
+        Sporify();
         GiveForm();
+        SwapSkin();
     }
     
-    
-    
-    
-    void Atomize()
+
+    void Sporify()
     {
         LoadPrefab();
         GetMesh();
@@ -44,13 +43,20 @@ public class ProSlimeBuilder : MonoBehaviour
     void GiveForm()
     {
         GiveBones();
-        GiveSkin();
+        GiveSkin();  
     }
+
+    void SwapSkin()
+    {
+        gameObject.transform.DetachChildren();
+        gameObject.transform.SetParent(coreAtom.transform);
+    }
+
 
     #endregion
 
 
-    #region builder methods
+    #region spell components
     void LoadPrefab()
     {
         particle = Resources.Load<GameObject>(par);
@@ -84,7 +90,7 @@ public class ProSlimeBuilder : MonoBehaviour
     void PopulateParticles()
     {   
         //SpawnCore at gameobject center
-        GameObject coreAtom = Instantiate(core, gameObject.transform.position, Quaternion.identity);
+        coreAtom = Instantiate(core, gameObject.transform.position, Quaternion.identity);
         coreAtom.transform.parent = gameObject.transform;
         points = new List<GameObject>();
         //spawn at each mesh vertex 
@@ -96,7 +102,7 @@ public class ProSlimeBuilder : MonoBehaviour
             Vector3 towardCenter = -sortedVerts[i].normalized * offset;
             GameObject atom = Instantiate(particle, gameObject.transform.position + sortedVerts[i] + towardCenter, Quaternion.identity);
            
-            atom.transform.parent = gameObject.transform;
+            atom.transform.parent = coreAtom.transform;
             points.Add(atom);
         }   
     }
@@ -130,17 +136,16 @@ public class ProSlimeBuilder : MonoBehaviour
     [ExecuteInEditMode]
     void GiveSkin()
     {
-        DestroyImmediate(GetComponent<SpriteRenderer>());
+        DestroyImmediate(gameObject.GetComponent<SpriteRenderer>());
         gameObject.AddComponent<SpriteShapeRenderer>();
         gameObject.AddComponent<SpriteShapeController>();
         SpriteShapeController ssCont = gameObject.GetComponent<SpriteShapeController>();
         ssCont.spline.Clear();
         for (int i = 0; i < points.Count; i++) 
         {
+            
             ssCont.spline.InsertPointAt(i, sortedVerts[i]);
             ssCont.spline.SetTangentMode(i, ShapeTangentMode.Continuous);
-            ssCont.spline.SetLeftTangent(i, -Vector2.Perpendicular(sortedVerts[i]));
-            ssCont.spline.SetRightTangent(i, Vector2.Perpendicular(sortedVerts[i]));
             ssCont.spline.SetHeight(i, 0);
         }
         ssCont.spriteShape = Resources.Load<SpriteShape>(skin);
@@ -154,8 +159,10 @@ public class ProSlimeBuilder : MonoBehaviour
         Spline spline = GetComponent<SpriteShapeController>().spline; 
         for (int i = 0;i < spline.GetPointCount() ;i++) 
         {
-            Debug.Log($"spline at position {spline.GetPosition(i)} has rtan = {spline.GetRightTangent(i)} and ltan = {spline.GetLeftTangent(i)} ");
+            Debug.Log($"spline at position {spline.GetPosition(i)} has rtan = {spline.GetRightTangent(i)} and ltan = {spline.GetLeftTangent(i)}");
         }
     }
+
+
     #endregion
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.U2D;
 using System.Collections.Generic;
 
@@ -10,15 +9,9 @@ public class SoftBodyController : MonoBehaviour
     #endregion
 
     #region fields
-    [SerializeField] public SpriteShapeController spriteShape;
-    [SerializeField] public Transform[] points;
+    public SpriteShapeController spriteShape;
+    public Transform[] points;
     
-    [SerializeField] private List<SpringJoint2D> outerSprings = new List<SpringJoint2D>();
-    [SerializeField] private List<DistanceJoint2D> outerRods = new List<DistanceJoint2D>();
-    [SerializeField] private List<SpringJoint2D> innerSprings = new List<SpringJoint2D>();
-
-    [Range(0, 3)]
-    public float targetScale, scaleSpeed;
 
     #region 
     #endregion
@@ -28,16 +21,12 @@ public class SoftBodyController : MonoBehaviour
 
     #region callbacks
     private void Awake()
-    {
-        MatchTargetScale();
-        UpdateVertices();
-        GetJoints();
+    {        
+        UpdateVertices();        
     }
     private void Update()
     {
-        UpdateVertices();
-        UpdateSize();
-
+        UpdateVertices();        
     }
     #endregion
 
@@ -68,71 +57,10 @@ public class SoftBodyController : MonoBehaviour
             spriteShape.spline.SetLeftTangent(i, newLt);
             spriteShape.spline.SetRightTangent(i, newRt);
 
-            
         }
     }
 
-    //for use with growing and shrinking mechanic
-    private void GetJoints() 
-    {
-        foreach (var point in points) 
-        {
-            foreach (SpringJoint2D spring in point.gameObject.GetComponents<SpringJoint2D>())
-            {
-                Debug.Log($"spring connected body = {spring.connectedBody} && gameobject = {gameObject}" );
-                if (spring.connectedBody.gameObject  == gameObject)
-                {
-                    innerSprings.Add(spring);
-                }
-                else outerSprings.Add(spring);
-            }
-            outerRods.Add(point.gameObject.GetComponent<DistanceJoint2D>());
-        }
-    }
 
-    private void MatchTargetScale()
-    {
-        targetScale = transform.localScale.x;
-    }
-
-    //this already has some dumbassery. Note, calling the vector conversion each time just to check 
-    //this dumbassery is now outdated.
-    //tfw we got new dumbassery
-    private void UpdateSize() 
-    {
-        if (targetScale != transform.localScale.x) transform.localScale = new Vector3(targetScale, targetScale, targetScale);
-    }
-    //this is crazy. why no slow grow
-    
-    /*
-    private void SlowGrow()
-    {
-        transform.localScale += new Vector3(transform.localScale.x + Time.deltaTime, transform.localScale.y + Time.deltaTime, transform.localScale.z + Time.deltaTime);
-    }
-    */
-    /*
-    private void GetInitSprings() 
-    {
-        innerDis = innerSprings[0].distance;
-        outerDis = outerSprings[0].distance;
-        frequency = outerSprings[0].frequency;
-        damping = outerSprings[0].dampingRatio;
-    }
-
-    private void UpdateSprings() 
-    {
-        for(int i = 0; i < innerSprings.Count; i++)
-        {
-            innerSprings[i].frequency = frequency;
-            innerSprings[i].dampingRatio = damping;
-        }
-        for(int i = 0;i < outerSprings.Count; i++)
-        {
-            outerSprings[i].frequency = frequency;
-            outerSprings[i].dampingRatio = damping;
-        }
-    }
-    */
     #endregion
 
 }
