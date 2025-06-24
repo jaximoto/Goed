@@ -9,11 +9,13 @@ public class SlimeController : MonoBehaviour
     public float rolltiplier;
     private FrameInput _frameInput;
     private Vector2 _frameVelocity;
+    private float _time;
     public List<GameObject> points;
 
     //-------------Editor Interface---------------------------
 
     // Horizontal Movement
+    public bool takingInput = true;
     public float Speed = 1.0f;
     public float MaxSpeed = 14f;
     public float Acceleration = 0.5f;
@@ -23,10 +25,15 @@ public class SlimeController : MonoBehaviour
     // Vertical Movement
     public bool _grounded;
     public bool _endedJumpEarly;
+    private bool _bufferedJumpUsable, _jumpToConsume;
+    private float _timeJumpWasPressed;
+    private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + JumpBuffer;
     public float GroundedGravity =-1.5f;
     public float FallAcceleration = 50f;
     public float JumpEndEarlyGravityModifier = 3f;
     public float MaxFallSpeed = 40.0f;
+    public float JumpBuffer = .2f;
+    public float JumpPower = 36;
 
 
     // Collison
@@ -60,7 +67,12 @@ public class SlimeController : MonoBehaviour
     // --------------------------UPDATE METHODS------------------
     void Update()
     {
-        GatherInput();
+        _time += Time.deltaTime;
+        if (_time > .5f && takingInput)
+        {
+            GatherInput();
+        }
+        
         
     }
 
@@ -73,21 +85,48 @@ public class SlimeController : MonoBehaviour
             JumpHeld = Input.GetButton("Jump")
         };
 
-        /*
+        
         if (_frameInput.JumpDown)
         {
             _jumpToConsume = true;
             _timeJumpWasPressed = _time;
         }
-        */
+        
+    }
+
+    private void HandleJump()
+    {
+        if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.linearVelocityY > 0)
+            _endedJumpEarly = true;
+
+        if (!_jumpToConsume && !HasBufferedJump)
+            return;
+
+        if (_grounded)
+            ExecuteJump();
+
+        _jumpToConsume = false;
+    }
+
+    private void ExecuteJump()
+    {
+        _endedJumpEarly = false;
+        _timeJumpWasPressed = 0;
+        _bufferedJumpUsable = false;
+        _frameVelocity.y = JumpPower;
+        //Jumped?.Invoke();
     }
 
     // -------------------------------FIXED UPDATE METHODS--------------
     private void FixedUpdate()
     {
         CheckCollisions();
+
+        HandleJump();
         HandleHorizontal();
+
         Gravity();
+
         ApplyMovement();
     }
 
