@@ -22,7 +22,6 @@ public class ProSlimeBuilder : MonoBehaviour
     public List<GameObject> points;
 
     public List<float> angles;
-    public List<float> anglesToRemove;
     #endregion
 
     #region spells
@@ -82,73 +81,88 @@ public class ProSlimeBuilder : MonoBehaviour
             Vector3 vert3 = new Vector3(vertices[i].x, vertices[i].y, gameObject.transform.position.z);
             //signed angle from Vector3(1,0,0) and Vector3(vertex) (-180,180)
             float theta = 180 + Vector3.Angle(gameObject.transform.right, vert3) * Mathf.Sign(vertices[i].y);
-            Debug.Log("gameobject.transform.position = ");
             //key is angle, vector3 value
             vertDict.Add(theta, vert3);
         }
         angles = new List<float>(vertDict.Keys);
         //Refine Vertice list before passing it on
         CheckAngles();
-
-        //copy sorted vertices to list. 
+        
+        //copy sorted vertices to list. terrible to do this twice i think 
         sortedVerts = new List<Vector3>(vertDict.Values);
-
+        CheckDistance();
+        sortedVerts = new List<Vector3>(vertDict.Values);
     }
 
 
     
     //Various helpers for SortVertice(). Goal is to refine sorted Vector3 List before passing to particlize functions. Ideally clean up extra data storage when done
     #region sorting particle helpers
-    [ContextMenu("CheckAngles")]
     void CheckAngles()
     {
-        anglesToRemove = new List<float>();
         for (int i = 0; i < angles.Count; i++)
         {
             float angleDiff;
             if (i == angles.Count - 1)
-            {   //cheat it
+            {   
                 angleDiff = Mathf.Abs(angles[i] - (angles[0] + 360));
-                if (angleDiff <= 5)
-                {
-                    MergeAtomsFromAngles(angles[i], angles[0]);
-                }
+                if (angleDiff <= 5) MergeAtomsFromAngles(angles[i], angles[0]); 
             }
             else 
             { 
                 angleDiff = Mathf.Abs(angles[i] - angles[i + 1]);
-                if (angleDiff <= 5)
-                {
-                    MergeAtomsFromAngles(angles[i], angles[i + 1]);
-                }
+                if (angleDiff <= 5) MergeAtomsFromAngles(angles[i], angles[i + 1]); 
             }
-
-            //if angleDiff is less than 5, create new vertex entry between the two points with angle diff 0
-
-
-
-            Debug.Log($"angleDiff i {i} is {angleDiff}");
-
         }
-        
-
     }
 
     void MergeAtomsFromAngles(float a1, float a2) //i should call these aa and ab lol
     {
         Vector3 p1 = vertDict[a1]; Vector3 p2 = vertDict[a2]; 
-        float mag = p1.magnitude;
-        Vector3 newP = (p1 + p2).normalized * mag;
+        Vector3 newP = (p1 + p2).normalized * p1.magnitude;
         float newA = 180 + Vector3.Angle(gameObject.transform.right, newP) * Mathf.Sign(newP.y);
-        Debug.Log($"p1 = {p1} and p2 = {p2}");
-        Debug.Log($"new point with angle {newA} at point {newP}");
         vertDict.Remove(a1); vertDict.Remove(a2);
         vertDict.Add(newA, newP);
     }
 
-    void FillVertices()
+    void CheckDistance()
     {
+        for (int i = 0; i < sortedVerts.Count; i++) 
+        {
+            float distance;
+            if (i == sortedVerts.Count - 1)
+            {
+                distance = (sortedVerts[i] - sortedVerts[0]).magnitude;
+                if (distance >= 0.5) FillDistance(distance, sortedVerts[i], sortedVerts[0]);
+            }
+            else 
+            {
+                distance = (sortedVerts[i] - sortedVerts[i + 1]).magnitude;
+                if (distance >= 0.5) FillDistance(distance, sortedVerts[i], sortedVerts[i + 1]);
+            }
+        }
+    }
 
+
+    void FillDistance(float dis, Vector3 v1, Vector3 v2)
+    {
+        
+        int newPoints = Mathf.RoundToInt(dis / 0.25f) - 1;
+        //get direction
+        Vector3 dir = (v2 - v1).normalized;
+        float disAdd = dis / (newPoints + 1);
+        Debug.Log($"v1 = {v1}, v2 = {v2}, dir = {dir}, disAdd = {disAdd}");
+        for (int i = 0;i < newPoints;i++) 
+        { 
+            Vector3 newP = v1 + (dir * disAdd * (i+1));
+            //add Manual offset
+
+            Vector3 offset = newP.normalized * (particle.transform.localScale.x / 2);
+            Vector3 offP = newP + offset;
+            float newA = 180 + Vector3.Angle(gameObject.transform.right, newP) * Mathf.Sign(newP.y);
+            Debug.Log($"iteration {i} || newP is {newP} and newA is {newA}");
+            vertDict.Add(newA, offP);
+        }
     }
 
     #endregion 
@@ -218,7 +232,6 @@ public class ProSlimeBuilder : MonoBehaviour
     }
 
 
-    [ContextMenu("Check Tangents")]
     void CheckTangents()
     {
         Spline spline = GetComponent<SpriteShapeController>().spline; 
@@ -228,9 +241,6 @@ public class ProSlimeBuilder : MonoBehaviour
             Debug.Log($"spline at position {spline.GetPosition(i)} ");
         }
     }
-
-
-    [ContextMenu("updateTan")]
     void UpdateTangents()
     {
        

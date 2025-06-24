@@ -180,21 +180,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef9dd2a7eed3c34a9bcddd7e8fdb1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rolltiplier: 0
+  rolltiplier: 5
   points: []
-  Speed: 1
-  MaxSpeed: 100
-  Acceleration: 0.5
-  GroundDeceleration: 0.5
-  AirDeceleration: 0.25
+  Speed: 5
+  MaxSpeed: 14
+  Acceleration: 120
+  GroundDeceleration: 60
+  AirDeceleration: 30
   _grounded: 0
   _endedJumpEarly: 0
-  GroundedGravity: -1.5
-  FallAcceleration: 50
+  GroundedGravity: 0.3
+  FallAcceleration: 20
   JumpEndEarlyGravityModifier: 3
   MaxFallSpeed: 40
   groundCheckIgnoreLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _col: {fileID: 0}
-  GroundDistance: 0
+  GroundDistance: 0.5
