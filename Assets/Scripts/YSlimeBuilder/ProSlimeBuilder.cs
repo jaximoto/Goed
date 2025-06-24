@@ -157,7 +157,7 @@ public class ProSlimeBuilder : MonoBehaviour
             Vector3 newP = v1 + (dir * disAdd * (i+1));
             //add Manual offset
 
-            Vector3 offset = newP.normalized * (particle.transform.localScale.x / 2);
+            Vector3 offset = newP.normalized * (particle.transform.localScale.x * particle.GetComponent<CircleCollider2D>().radius);
             Vector3 offP = newP + offset;
             float newA = 180 + Vector3.Angle(gameObject.transform.right, newP) * Mathf.Sign(newP.y);
             Debug.Log($"iteration {i} || newP is {newP} and newA is {newA}");
@@ -176,7 +176,7 @@ public class ProSlimeBuilder : MonoBehaviour
         for (int i = 0; i < sortedVerts.Count; i++)
         {
             //offset is radius of particle? i think roughly? maybe check this lol.
-            float offset = particle.transform.localScale.x/2;
+            float offset = particle.transform.localScale.x * particle.GetComponent<CircleCollider2D>().radius;
             //invert and normalize 
             Vector3 towardCenter = -sortedVerts[i].normalized * offset;
             GameObject atom = Instantiate(particle, gameObject.transform.position + sortedVerts[i] + towardCenter, Quaternion.identity);

@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0.1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8186740499477125159}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ef9dd2a7eed3c34a9bcddd7e8fdb1fb, type: 3}
   m_Name: 
@@ -186,12 +186,12 @@ MonoBehaviour:
   MaxSpeed: 14
   Acceleration: 120
   GroundDeceleration: 60
-  AirDeceleration: 30
+  AirDeceleration: 40
   _grounded: 0
   _endedJumpEarly: 0
-  GroundedGravity: 0.3
-  FallAcceleration: 20
-  JumpEndEarlyGravityModifier: 3
+  GroundedGravity: -0.3
+  FallAcceleration: 40
+  JumpEndEarlyGravityModifier: 2
   MaxFallSpeed: 40
   groundCheckIgnoreLayers:
     serializedVersion: 2
