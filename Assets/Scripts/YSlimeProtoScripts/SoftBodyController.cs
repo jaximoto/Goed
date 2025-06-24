@@ -10,7 +10,7 @@ public class SoftBodyController : MonoBehaviour
 
     #region fields
     public SpriteShapeController spriteShape;
-    public Transform[] points;
+    public List<Transform> points = new List<Transform>();
     
 
     #region 
@@ -24,7 +24,7 @@ public class SoftBodyController : MonoBehaviour
     {        
         UpdateVertices();        
     }
-    private void LateUpdate()
+    private void Update()
     {
         UpdateVertices();        
     }
@@ -32,26 +32,27 @@ public class SoftBodyController : MonoBehaviour
 
     #region privateMethods
     private void UpdateVertices() {
-        for (int i = 0; i < points.Length; i++) {
-            Vector2 vertex = points[i].localPosition;
+        for (int i = 0; i < points.Count; i++) {
+            Vector2 vertex = points[i].localPosition * gameObject.transform.localScale.x;
             Vector2 towardsCenter = -vertex.normalized;
-
+            
             //when softbody controller is setup pull radius from there, this is stupid
-            float colliderRadius = points[i].gameObject.GetComponent<CircleCollider2D>().radius;
+            float colliderRadius = gameObject.transform.localScale.x * points[i].transform.localScale.x * points[i].gameObject.GetComponent<CircleCollider2D>().radius;
+            Debug.Log($"points[i].gameObject.transform.localScale.x is {points[i].gameObject.transform.localScale.x} and radius is{points[i].gameObject.GetComponent<CircleCollider2D>().radius}");
             try
             {
-                spriteShape.spline.SetPosition(i, (vertex - towardsCenter * colliderRadius));
+                spriteShape.spline.SetPosition(i, vertex - (towardsCenter * colliderRadius));
             }
             catch 
             {
-                Debug.Log("Spline points are too close.. recalculate");
-                spriteShape.spline.SetPosition(i, (vertex - towardsCenter * (colliderRadius + splineOffset)));
+                Debug.Log("Catch");
+                spriteShape.spline.SetPosition(i, vertex - (towardsCenter * (colliderRadius + splineOffset)));
             }
 
+            Debug.Log($"Vertex is {vertex}");
             Vector2 lt = spriteShape.spline.GetLeftTangent(i);
 
             Vector2 newRt = Vector2.Perpendicular(towardsCenter) * lt.magnitude;
-            Debug.Log($"lt magnitude is {lt.magnitude}");
             Vector2 newLt = -newRt;
 
             spriteShape.spline.SetLeftTangent(i, newLt);
