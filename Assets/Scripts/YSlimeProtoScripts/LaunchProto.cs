@@ -6,7 +6,7 @@ public class LaunchProto : MonoBehaviour
 {
     public bool launchHeld = false;
     public bool releasingLaunch = false;
-    public float x, y;
+    public float heldX, heldY;
     public bool deBone = false;
     public Vector2 launchVector;
     public float chargeDelta;
@@ -41,15 +41,15 @@ public class LaunchProto : MonoBehaviour
 
     void GatherInput()
     {
-        x = Input.GetAxisRaw("Horizontal");
-        y = Input.GetAxisRaw("Vertical");
+        heldX = Input.GetAxisRaw("Horizontal2");
+        heldY = Input.GetAxisRaw("Vertical2");
 
         
-        if (x != 0 || y != 0)
+        if (heldX != 0 || heldY != 0)
         {
             launchHeld = true;
         }
-        else if (launchHeld && x == 0 && y == 0)
+        else if (launchHeld && heldX == 0 && heldY == 0)
         {
             launchHeld = false;
             releasingLaunch = true;
@@ -60,7 +60,7 @@ public class LaunchProto : MonoBehaviour
     {
         if (launchHeld && !releasingLaunch)
         {
-            Vector2 moveDir = new Vector2(x, y).normalized;
+            Vector2 moveDir = new Vector2(heldX, heldY).normalized;
             currCharge += chargeDelta * Time.deltaTime;
             Debug.Log($"adding force = {moveDir * currCharge}");
             gameObject.GetComponent<Rigidbody2D>().AddForce(moveDir * currCharge);
@@ -95,7 +95,7 @@ public class LaunchProto : MonoBehaviour
             //Debug.Log($"");
             Gizmos.color = Color.green;
             Gizmos.DrawLine(gameObject.transform.position, 
-                new Vector3(gameObject.transform.position.x - x, gameObject.transform.position.y - y, gameObject.transform.position.z));
+                new Vector3(gameObject.transform.position.x - heldX, gameObject.transform.position.y - heldY, gameObject.transform.position.z));
         }
     }
 
