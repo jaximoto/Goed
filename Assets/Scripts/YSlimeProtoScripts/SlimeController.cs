@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -35,8 +36,17 @@ public class SlimeController : MonoBehaviour
     public float JumpPower = 36;
     public float GForce;
 
-    // Jewel Launch
-    public float LaunchSpeed;
+    // Jewel Launch 
+    public bool deBone = false; // turn into off taking input???
+    public float chargeDelta;
+    public float chargeMax;
+    public float currCharge;
+
+    public float chargeFrequency;
+
+    public bool ChargeHeld; //was launchHeld
+    public bool ChargeUp; //was releasingLaunch
+    public float LaunchSpeed; //unused
 
     // Collison
     private bool _cachedQueryStartInColliders;
@@ -48,8 +58,10 @@ public class SlimeController : MonoBehaviour
         public Vector2 Move;
         public bool JumpDown;
         public bool JumpHeld;
-        public bool ShootUp;
-        public bool ShootHeld;
+
+        //Jewel shoot stuff
+        public Vector2 ChargeDir; //was chargeVector
+        
     }
 
     // Put interface for player here:
@@ -77,7 +89,7 @@ public class SlimeController : MonoBehaviour
         {
             GatherInput();
         }
-        
+
         
     }
 
@@ -88,8 +100,8 @@ public class SlimeController : MonoBehaviour
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
             JumpDown = Input.GetButtonDown("Jump"),
             JumpHeld = Input.GetButton("Jump"),
-            ShootHeld = Input.GetMouseButton(0),
-            ShootUp = Input.GetMouseButtonUp(0)
+
+            ChargeDir = new Vector2(Input.GetAxisRaw("Horizontal2"), Input.GetAxisRaw("Vertical2")),
         };
 
         
@@ -98,31 +110,100 @@ public class SlimeController : MonoBehaviour
             _jumpToConsume = true;
             _timeJumpWasPressed = _time;
         }
+
+        //--------------------------JASPER WUZ HERE--------------
+
+        if (_frameInput.ChargeDir != Vector2.zero) 
+        {
+            ChargeHeld = true;
+        }
+        else if (ChargeHeld && _frameInput.ChargeDir == Vector2.zero)
+        {
+            ChargeHeld = false;
+            ChargeUp = true;
+        }
+
+    }
+
+    //-------------------------------DEBONE LATEUPDATE--------------
+
+
+    //-------------------------------JEWEL SHOOTING SHIT--------------
+    private void HandleShoot()
+    {
+
+        if (ChargeUp)
+        {
+            Shoot();
+            StartCoroutine(EndOfFrameDeBone());
+            //LaunchJewel();
+        }
+        else if (ChargeHeld)
+        {
+            // Show path of jewel when launched, start forward and up and reacts to mouse movement
+            ChargeShot();
+            
+        } 
+    }
+
+
+    void OnDrawGizmos()
+    {
+        //Gather Component Vectors
+        if (ChargeHeld)
+        {
+            //Debug.Log($"");
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(gameObject.transform.position,
+                new Vector3(gameObject.transform.position.x - _frameInput.ChargeDir.x, gameObject.transform.position.y - _frameInput.ChargeDir.y, gameObject.transform.position.z));
+        }
+    }
+
+
+    void ChargeShot()
+    {
+        Vector2 moveDir = _frameInput.ChargeDir.normalized;
+        currCharge += chargeDelta * Time.deltaTime;
+        Debug.Log($"adding force = {moveDir * currCharge}");
+        gameObject.GetComponent<Rigidbody2D>().AddForce(moveDir * currCharge);
+
+        for (int i = 0; i < points.Count; i++)
+        {
+            if (points[i].GetComponents<SpringJoint2D>()[0].frequency != chargeFrequency)
+            {
+                points[i].GetComponents<SpringJoint2D>()[0].frequency = chargeFrequency;
+            }
+        }
+    }
+
+    void Shoot()
+    {
+        currCharge = 0;
+        for (int i = 0; i < points.Count; i++)
+        {
+            points[i].GetComponents<SpringJoint2D>()[0].frequency = 25;
+            deBone = true;
+            ChargeUp = false;
+        }
         
     }
 
-    private void HandleShoot()
+    IEnumerator EndOfFrameDeBone()
     {
-        if (_frameInput.ShootHeld)
-        {
-            // Show path of jewel when launched, start forward and up and reacts to mouse movement
-            DisplayShot();
-        }
-        if (_frameInput.ShootUp)
-        {
-            //LaunchJewel();
-        }
-
-        else
-        {
-            //ClearShot();
-        }
+        yield return new WaitForEndOfFrame();
+        DeBone();
     }
 
-    private void DisplayShot()
-    {
 
+    void DeBone()
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            points[i].GetComponents<SpringJoint2D>()[0].enabled = false;
+        }
+        gameObject.transform.DetachChildren();
     }
+    //-------------------------------END JASPER CONTAMINATED ZONE-----------------
     private void HandleJump()
     {
         if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.linearVelocityY > 0)
@@ -157,6 +238,8 @@ public class SlimeController : MonoBehaviour
         Gravity();
 
         ApplyMovement();
+
+        HandleShoot();
     }
 
     private void CheckCollisions()
