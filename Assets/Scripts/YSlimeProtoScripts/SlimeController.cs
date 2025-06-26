@@ -43,6 +43,12 @@ public class SlimeController : MonoBehaviour
     public float currCharge;
 
     public float chargeFrequency;
+    public float shootFrequency;
+    public float shootMultiplier;
+
+    // Jewel Movement Stats
+    public float jewelAirDeceleration, jewelFallAcceleration, jewelGroundDeceleration;
+
 
     public bool ChargeHeld; //was launchHeld
     public bool ChargeUp; //was releasingLaunch
@@ -135,7 +141,7 @@ public class SlimeController : MonoBehaviour
         if (ChargeUp)
         {
             Shoot();
-            StartCoroutine(EndOfFrameDeBone());
+            //StartCoroutine(EndOfFrameDeBone());
             //LaunchJewel();
         }
         else if (ChargeHeld)
@@ -166,32 +172,30 @@ public class SlimeController : MonoBehaviour
         currCharge += chargeDelta * Time.deltaTime;
         Debug.Log($"adding force = {moveDir * currCharge}");
         gameObject.GetComponent<Rigidbody2D>().AddForce(moveDir * currCharge);
-
-        for (int i = 0; i < points.Count; i++)
+        Debug.Log($"charge = {currCharge}");
+        if(currCharge >= 200)
         {
-            if (points[i].GetComponents<SpringJoint2D>()[0].frequency != chargeFrequency)
-            {
-                points[i].GetComponents<SpringJoint2D>()[0].frequency = chargeFrequency;
-            }
+            Debug.Log("Wowzers");
         }
     }
 
     void Shoot()
     {
-        currCharge = 0;
+        Vector2 ShotForce = new Vector2();
+        
         for (int i = 0; i < points.Count; i++)
         {
-            points[i].GetComponents<SpringJoint2D>()[0].frequency = 25;
-            deBone = true;
-            ChargeUp = false;
+            ShotForce += points[i].GetComponents<SpringJoint2D>()[0].reactionForce;
         }
-        
-    }
-
-    IEnumerator EndOfFrameDeBone()
-    {
-        yield return new WaitForEndOfFrame();
         DeBone();
+        Debug.Log($"currcharge is {currCharge}");
+        //gameObject.GetComponent<Rigidbody2D>().AddForce(ShotForce * currCharge, ForceMode2D.Impulse);
+        _grounded = false;
+        _frameVelocity += ShotForce * shootMultiplier;
+        currCharge = 0;
+        deBone = true;
+        ChargeUp = false;
+        
     }
 
 
@@ -199,6 +203,7 @@ public class SlimeController : MonoBehaviour
     {
         for (int i = 0; i < points.Count; i++)
         {
+            Debug.Log($"(i = {i}) debone reforce is {points[i].GetComponents<SpringJoint2D>()[0].reactionForce}");
             points[i].GetComponents<SpringJoint2D>()[0].enabled = false;
         }
         gameObject.transform.DetachChildren();
@@ -231,15 +236,15 @@ public class SlimeController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckCollisions();
-
+        HandleShoot();
         HandleJump();
         HandleHorizontal();
 
         Gravity();
-
+        
         ApplyMovement();
 
-        HandleShoot();
+        
     }
 
     private void CheckCollisions()
@@ -277,30 +282,52 @@ public class SlimeController : MonoBehaviour
     }
     private void HandleHorizontal()
     {
-        if (_frameInput.Move.x == 0)
+        if (deBone)
         {
-            var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
+            Debug.Log($"_grounded is {_grounded}");
+            var deceleration = _grounded ? jewelGroundDeceleration : jewelAirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+            Debug.Log($"_framevelocity is {_frameVelocity}");    
         }
         else
         {
-            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+            if (_frameInput.Move.x == 0)
+            {
+                var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
+                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+            }
+            else
+            {
+                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+            }
         }
     }
     private void ApplyMovement()
     {
         _rb.linearVelocity = _frameVelocity;
-        foreach(GameObject child in points)
+        if (!deBone) 
         {
-            child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
+            foreach (GameObject child in points)
+            {
+                child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
+            }
         }
     }
 
     private void Gravity()
     {
-        if(_grounded && _frameVelocity.y <= 0f)
+
+
+        if (_grounded && _frameVelocity.y <= 0f)
         {
             _frameVelocity.y = GroundedGravity;
+        }
+        else if (deBone && !_grounded)
+        {
+            var inAirGravity = jewelFallAcceleration;
+            GForce = Mathf.MoveTowards(_frameVelocity.y, -MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+            _frameVelocity.y = GForce;
+
         }
         else
         {

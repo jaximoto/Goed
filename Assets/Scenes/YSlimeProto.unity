@@ -4391,6 +4391,7 @@ GameObject:
   - component: {fileID: 1874813745}
   - component: {fileID: 1874813744}
   - component: {fileID: 1874813743}
+  - component: {fileID: 1874813751}
   m_Layer: 6
   m_Name: particle(Clone)
   m_TagString: Untagged
@@ -4640,6 +4641,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1966517910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1874813751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874813741}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8954c0c9386a4514aae0b40ec0fa99dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1966517904
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,7 +4682,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966517904}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ef9dd2a7eed3c34a9bcddd7e8fdb1fb, type: 3}
   m_Name: 
@@ -4689,6 +4702,18 @@ MonoBehaviour:
   JumpBuffer: 0.2
   JumpPower: 36
   GForce: 0
+  deBone: 0
+  chargeDelta: 100
+  chargeMax: 0
+  currCharge: 0
+  chargeFrequency: 5
+  shootFrequency: 100
+  shootMultiplier: 0.1
+  jewelAirDeceleration: 0.1
+  jewelFallAcceleration: 10
+  jewelGroundDeceleration: 10
+  ChargeHeld: 0
+  ChargeUp: 0
   LaunchSpeed: 0
   groundCheckIgnoreLayers:
     serializedVersion: 2
@@ -4874,17 +4899,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966517904}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09415382bb07d744887fafd07546e8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chargeVector: {x: 0, y: 0}
   launchHeld: 0
   releasingLaunch: 0
-  x: 0
-  y: 0
   deBone: 0
-  launchVector: {x: 0, y: 0}
   chargeDelta: 3
   chargeMax: 0
   currCharge: 0
