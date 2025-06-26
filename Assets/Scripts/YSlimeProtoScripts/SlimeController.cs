@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.WSA;
+using static Unity.VisualScripting.Metadata;
+using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class SlimeController : MonoBehaviour
 {
@@ -28,7 +30,7 @@ public class SlimeController : MonoBehaviour
     private bool _bufferedJumpUsable, _jumpToConsume;
     private float _timeJumpWasPressed;
     private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + JumpBuffer;
-    public float GroundedGravity =-1.5f;
+    public float GroundedGravity = -1.5f;
     public float FallAcceleration = 50f;
     public float JumpEndEarlyGravityModifier = 3f;
     public float MaxFallSpeed = 40.0f;
@@ -46,14 +48,21 @@ public class SlimeController : MonoBehaviour
     public float shootFrequency;
     public float shootMultiplier;
 
-    // Jewel Movement Stats
-    public float jewelAirDeceleration, jewelFallAcceleration, jewelGroundDeceleration;
-
-
     public bool ChargeHeld; //was launchHeld
     public bool ChargeUp; //was releasingLaunch
     public float LaunchSpeed; //unused
 
+    // Jewel Movement Stats
+    public float jewelAirDeceleration, jewelFallAcceleration, jewelGroundDeceleration;
+
+    // Scaling stuff
+    public float distanceCovered;
+    public float lossMult, scaleMult;
+
+    public Vector3[][] _connectedAnchors;
+    public Vector3[][] _anchors;
+    public float[][] _distance; 
+    
     // Collison
     private bool _cachedQueryStartInColliders;
     public LayerMask groundCheckIgnoreLayers;
@@ -85,6 +94,8 @@ public class SlimeController : MonoBehaviour
             if(transform.GetChild(i).TryGetComponent<Rigidbody2D>(out _))
                 points.Add(transform.GetChild(i).gameObject);
         }
+
+        ConfigureAnchors();
     }
 
     // --------------------------UPDATE METHODS------------------
@@ -95,8 +106,8 @@ public class SlimeController : MonoBehaviour
         {
             GatherInput();
         }
+        UpdateAnchors();
 
-        
     }
 
     private void GatherInput()
@@ -190,7 +201,6 @@ public class SlimeController : MonoBehaviour
         DeBone();
         Debug.Log($"currcharge is {currCharge}");
         //gameObject.GetComponent<Rigidbody2D>().AddForce(ShotForce * currCharge, ForceMode2D.Impulse);
-        _grounded = false;
         _frameVelocity += ShotForce * shootMultiplier;
         currCharge = 0;
         deBone = true;
@@ -208,6 +218,68 @@ public class SlimeController : MonoBehaviour
         }
         gameObject.transform.DetachChildren();
     }
+
+    //Scale multiplier for each joint
+    void ConfigureAnchors()
+    {
+        _connectedAnchors = new Vector3[points.Count][];
+        _anchors = new Vector3[points.Count][];
+        _distance = new float[points.Count][];
+        for (int i = 0; i < points.Count; i++)
+        {
+            _connectedAnchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
+            _anchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
+            _distance[i] = new float[points[i].GetComponents<SpringJoint2D>().Length];
+            for (int j = 0; j < points[i].GetComponents<SpringJoint2D>().Length; j++)
+            {
+                _connectedAnchors[i][j] = points[i].GetComponents<SpringJoint2D>()[j].connectedAnchor;
+                _anchors[i][j] = points[i].GetComponents<SpringJoint2D>()[j].anchor;
+                _distance[i][j] = points[i].GetComponents<SpringJoint2D>()[j].distance;
+            }
+        }
+    }
+
+    //Reset anchors when scaling?
+    void UpdateAnchors()
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            for (int j = 0; j < points[i].GetComponents<SpringJoint2D>().Length; j++)
+            {
+                Debug.Log("Connected anchor is ");
+                points[i].GetComponents<SpringJoint2D>()[j].connectedAnchor = _connectedAnchors[i][j];
+                points[i].GetComponents<SpringJoint2D>()[j].anchor = _anchors[i][j];
+                points[i].GetComponents<SpringJoint2D>()[j].distance = _distance[i][j];
+            }
+        }
+    }
+
+    void WalkSlimeLoss()
+    {
+        // parent scaling breaks spring joints
+        
+        //--------------------Okay chucklefucks we got a new plan
+        //----First off we need three arrays of size 
+        
+        Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f);
+        gameObject.transform.localScale -= distanceCovered * loss;
+
+    }
+
+    // | ||
+    // | |_
+
+    //keep track of horizontal distance covered while grounded 
+    void CheckWalkLoss()
+    {
+        if (_grounded)
+        {
+            distanceCovered = Mathf.Abs(_frameVelocity.x * Time.fixedDeltaTime);
+            Debug.Log($"distanceCovered = {distanceCovered}");
+        }
+    }
+
+
     //-------------------------------END JASPER CONTAMINATED ZONE-----------------
     private void HandleJump()
     {
@@ -295,10 +367,14 @@ public class SlimeController : MonoBehaviour
             {
                 var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
                 _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+                CheckWalkLoss();
+                WalkSlimeLoss();
             }
             else
             {
                 _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+                CheckWalkLoss();
+                WalkSlimeLoss();
             }
         }
     }
