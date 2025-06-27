@@ -106,7 +106,7 @@ public class SlimeController : MonoBehaviour
         {
             GatherInput();
         }
-        UpdateAnchors();
+        
 
     }
 
@@ -263,7 +263,7 @@ public class SlimeController : MonoBehaviour
         
         Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f);
         gameObject.transform.localScale -= distanceCovered * loss;
-
+        UpdateAnchors();
     }
 
     // | ||
