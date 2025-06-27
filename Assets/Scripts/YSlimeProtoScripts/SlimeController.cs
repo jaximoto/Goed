@@ -185,11 +185,18 @@ public class SlimeController : MonoBehaviour
 
         for(int i = 0; i < _pointTargets.Length; i++)
         {
+            //ReShaping Force
             Gizmos.color = Color.red;
-            //We wanna get a new target
             Vector3 target = gameObject.transform.position + (_pointTargets[i] * gameObject.transform.localScale.x);
-            //  draw line to target
             Gizmos.DrawLine(points[i].transform.position, target);
+
+            //connecting lines
+            Gizmos.color = Color.blue;
+
+
+         
+            if(i == points.Count - 1) Gizmos.DrawLine(points[i].transform.position, points[0].transform.position);
+            else Gizmos.DrawLine(points[i].transform.position, points[i + 1].transform.position);
         }
     }
 
@@ -305,11 +312,6 @@ public class SlimeController : MonoBehaviour
         }
     }
     
-    void AlignReboundForce()
-    {
-        
-    }
-    
     void ApplyReboundForce()
     {
         for (int i = 0;i < _pointTargets.Length; i++)
@@ -320,6 +322,41 @@ public class SlimeController : MonoBehaviour
         }
     }
     
+    void CheckBetween()
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            Transform currP, nextP;
+            
+            if (i == points.Count - 1)
+            {
+                currP = points[i].transform;
+                nextP = points[0].transform;
+            }
+            else
+            {
+                currP = points[i].transform;
+                nextP = points[i+1].transform;
+            }
+
+            Vector3 targetDir = nextP.position - currP.position;
+            Debug.DrawRay(currP.position, targetDir, Color.yellow);
+
+            RaycastHit2D hit = Physics2D.Raycast(currP.position, targetDir.normalized, targetDir.magnitude, ~groundCheckIgnoreLayers.value);
+            if (hit)
+            {
+                Debug.Log($"hit {hit.transform.gameObject}");
+                Debug.Log($"Raycast hit between {currP} and {nextP}");
+                Vector2 perpForce = Vector2.Perpendicular(targetDir);
+
+                Debug.DrawRay(currP.position, perpForce, Color.black);
+                Debug.DrawRay(nextP.position, perpForce, Color.black);
+
+                currP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
+                nextP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
+            }
+        }
+    }
     
 
 
@@ -360,6 +397,7 @@ public class SlimeController : MonoBehaviour
         ApplyMovement();
 
         ApplyReboundForce();
+        CheckBetween();
     }
 
     private void CheckCollisions()
