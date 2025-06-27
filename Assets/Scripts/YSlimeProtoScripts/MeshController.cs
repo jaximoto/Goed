@@ -32,7 +32,7 @@ public class MeshController : MonoBehaviour
 
         // Normals 
         Vector3[] normals = new Vector3[points.Count]; 
-        float x, y;
+        
 
         // uvs
         Vector2[] uvs = new Vector2[points.Count];
