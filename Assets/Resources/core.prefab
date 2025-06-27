@@ -113,10 +113,10 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &-7242866974107045603
 CircleCollider2D:
@@ -134,7 +134,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -209,6 +209,10 @@ MonoBehaviour:
   distanceCovered: 0
   lossMult: 0
   scaleMult: 0.001
+  _hingeConnectedAnchors: []
+  _hingeAnchors: []
+  _pointTargets: []
+  reboundStrength: 10
   groundCheckIgnoreLayers:
     serializedVersion: 2
     m_Bits: 64

@@ -67,7 +67,7 @@ public class SlimeController : MonoBehaviour
 
     //Rebounding Stuff
     public Vector3[] _pointTargets;
-
+    public float reboundStrength;
 
     
     // Collison
@@ -255,6 +255,8 @@ public class SlimeController : MonoBehaviour
         {
             _hingeConnectedAnchors[i] = points[i].GetComponent<HingeJoint2D>().connectedAnchor;
             _hingeAnchors[i] = points[i].GetComponent<HingeJoint2D>().anchor;
+            points[i].GetComponent<HingeJoint2D>().autoConfigureConnectedAnchor = false;
+
             _connectedAnchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _anchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _distance[i] = new float[points[i].GetComponents<SpringJoint2D>().Length];
@@ -262,7 +264,9 @@ public class SlimeController : MonoBehaviour
             {
                 _connectedAnchors[i][j] = points[i].GetComponents<SpringJoint2D>()[j].connectedAnchor;
                 _anchors[i][j] = points[i].GetComponents<SpringJoint2D>()[j].anchor;
+                points[i].GetComponent<SpringJoint2D>().autoConfigureConnectedAnchor = false;
                 _distance[i][j] = points[i].GetComponents<SpringJoint2D>()[j].distance;
+                points[i].GetComponent<SpringJoint2D>().autoConfigureDistance = false;
             }
         }
     }
@@ -313,13 +317,13 @@ public class SlimeController : MonoBehaviour
     }
     
     // add multiplier and call when situations get dire?
-    void ApplyReboundForce()
+    void ApplyReboundForce(float reboundMult)
     {
         for (int i = 0;i < _pointTargets.Length; i++)
         {
             Vector3 target = gameObject.transform.position + (_pointTargets[i] * gameObject.transform.localScale.x);
             Vector3 targetDir = target - points[i].transform.position;
-            points[i].GetComponent<Rigidbody2D>().AddForce(targetDir, ForceMode2D.Impulse);
+            points[i].GetComponent<Rigidbody2D>().AddForce(targetDir * reboundMult, ForceMode2D.Impulse);
         }
     }
     
@@ -365,13 +369,14 @@ public class SlimeController : MonoBehaviour
                 {
                     Debug.DrawRay(currP.position, currToCore, Color.green);
                     currP.GetComponent<Collider2D>().isTrigger = true;
+                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore);
                 }
                 else currP.GetComponent<Collider2D>().isTrigger = false;
                 RaycastHit2D nextHit = Physics2D.Raycast(nextP.position, nextToCore.normalized, nextToCore.magnitude, ~groundCheckIgnoreLayers.value);
                 if (nextHit)
                 {    
                     Debug.DrawRay(nextP.position, nextToCore, Color.green);
-                    //nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore, ForceMode2D.Impulse);
+                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore);
                     nextP.GetComponent<Collider2D>().isTrigger = true;
                 }
                 else nextP.GetComponent<Collider2D>().isTrigger = false;
@@ -417,7 +422,7 @@ public class SlimeController : MonoBehaviour
         
         ApplyMovement();
 
-        ApplyReboundForce();
+        ApplyReboundForce(reboundStrength);
         CheckBetween();
     }
 
