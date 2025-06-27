@@ -312,6 +312,7 @@ public class SlimeController : MonoBehaviour
         }
     }
     
+    // add multiplier and call when situations get dire?
     void ApplyReboundForce()
     {
         for (int i = 0;i < _pointTargets.Length; i++)
@@ -354,6 +355,26 @@ public class SlimeController : MonoBehaviour
 
                 currP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
                 nextP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
+
+                //
+                Vector3 currToCore = gameObject.transform.position - currP.position;
+                Vector3 nextToCore = gameObject.transform.position - nextP.position;
+
+                RaycastHit2D currHit = Physics2D.Raycast(currP.position, currToCore.normalized, currToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                if (currHit)
+                {
+                    Debug.DrawRay(currP.position, currToCore, Color.green);
+                    currP.GetComponent<Collider2D>().isTrigger = true;
+                }
+                else currP.GetComponent<Collider2D>().isTrigger = false;
+                RaycastHit2D nextHit = Physics2D.Raycast(nextP.position, nextToCore.normalized, nextToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                if (nextHit)
+                {    
+                    Debug.DrawRay(nextP.position, nextToCore, Color.green);
+                    //nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore, ForceMode2D.Impulse);
+                    nextP.GetComponent<Collider2D>().isTrigger = true;
+                }
+                else nextP.GetComponent<Collider2D>().isTrigger = false;
             }
         }
     }
