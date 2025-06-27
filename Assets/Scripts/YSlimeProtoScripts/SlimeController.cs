@@ -59,9 +59,16 @@ public class SlimeController : MonoBehaviour
     public float distanceCovered;
     public float lossMult, scaleMult;
 
+    public Vector3[] _hingeConnectedAnchors;
+    public Vector3[] _hingeAnchors;
     public Vector3[][] _connectedAnchors;
     public Vector3[][] _anchors;
-    public float[][] _distance; 
+    public float[][] _distance;
+
+    //Rebounding Stuff
+    public Vector3[] _pointTargets;
+
+
     
     // Collison
     private bool _cachedQueryStartInColliders;
@@ -96,6 +103,7 @@ public class SlimeController : MonoBehaviour
         }
 
         ConfigureAnchors();
+        GetReboundTargets();
     }
 
     // --------------------------UPDATE METHODS------------------
@@ -174,6 +182,15 @@ public class SlimeController : MonoBehaviour
             Gizmos.DrawLine(gameObject.transform.position,
                 new Vector3(gameObject.transform.position.x - _frameInput.ChargeDir.x, gameObject.transform.position.y - _frameInput.ChargeDir.y, gameObject.transform.position.z));
         }
+
+        for(int i = 0; i < _pointTargets.Length; i++)
+        {
+            Gizmos.color = Color.red;
+            //We wanna get a new target
+            Vector3 target = gameObject.transform.position + (_pointTargets[i] * gameObject.transform.localScale.x);
+            //  draw line to target
+            Gizmos.DrawLine(points[i].transform.position, target);
+        }
     }
 
 
@@ -200,7 +217,7 @@ public class SlimeController : MonoBehaviour
         }
         DeBone();
         Debug.Log($"currcharge is {currCharge}");
-        //gameObject.GetComponent<Rigidbody2D>().AddForce(ShotForce * currCharge, ForceMode2D.Impulse);
+        
         _frameVelocity += ShotForce * shootMultiplier;
         currCharge = 0;
         deBone = true;
@@ -222,11 +239,15 @@ public class SlimeController : MonoBehaviour
     //Scale multiplier for each joint
     void ConfigureAnchors()
     {
+        _hingeAnchors = new Vector3[points.Count];
+        _hingeConnectedAnchors = new Vector3[points.Count];
         _connectedAnchors = new Vector3[points.Count][];
         _anchors = new Vector3[points.Count][];
         _distance = new float[points.Count][];
         for (int i = 0; i < points.Count; i++)
         {
+            _hingeConnectedAnchors[i] = points[i].GetComponent<HingeJoint2D>().connectedAnchor;
+            _hingeAnchors[i] = points[i].GetComponent<HingeJoint2D>().anchor;
             _connectedAnchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _anchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _distance[i] = new float[points[i].GetComponents<SpringJoint2D>().Length];
@@ -244,9 +265,11 @@ public class SlimeController : MonoBehaviour
     {
         for (int i = 0; i < points.Count; i++)
         {
+            points[i].GetComponent<HingeJoint2D>().connectedAnchor = _hingeConnectedAnchors[i];
+            points[i].GetComponent<HingeJoint2D>().anchor = _hingeAnchors[i];
+
             for (int j = 0; j < points[i].GetComponents<SpringJoint2D>().Length; j++)
             {
-                Debug.Log("Connected anchor is ");
                 points[i].GetComponents<SpringJoint2D>()[j].connectedAnchor = _connectedAnchors[i][j];
                 points[i].GetComponents<SpringJoint2D>()[j].anchor = _anchors[i][j];
                 points[i].GetComponents<SpringJoint2D>()[j].distance = _distance[i][j];
@@ -256,18 +279,10 @@ public class SlimeController : MonoBehaviour
 
     void WalkSlimeLoss()
     {
-        // parent scaling breaks spring joints
-        
-        //--------------------Okay chucklefucks we got a new plan
-        //----First off we need three arrays of size 
-        
         Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f);
         gameObject.transform.localScale -= distanceCovered * loss;
         UpdateAnchors();
     }
-
-    // | ||
-    // | |_
 
     //keep track of horizontal distance covered while grounded 
     void CheckWalkLoss()
@@ -278,6 +293,34 @@ public class SlimeController : MonoBehaviour
             Debug.Log($"distanceCovered = {distanceCovered}");
         }
     }
+
+
+    //slime realigning force
+    void GetReboundTargets()
+    {
+        _pointTargets = new Vector3[points.Count];
+        for (int i = 0; i < points.Count; i++)
+        {
+            _pointTargets[i] = points[i].transform.localPosition;
+        }
+    }
+    
+    void AlignReboundForce()
+    {
+        
+    }
+    
+    void ApplyReboundForce()
+    {
+        for (int i = 0;i < _pointTargets.Length; i++)
+        {
+            Vector3 target = gameObject.transform.position + (_pointTargets[i] * gameObject.transform.localScale.x);
+            Vector3 targetDir = target - points[i].transform.position;
+            points[i].GetComponent<Rigidbody2D>().AddForce(targetDir, ForceMode2D.Impulse);
+        }
+    }
+    
+    
 
 
     //-------------------------------END JASPER CONTAMINATED ZONE-----------------
@@ -316,7 +359,7 @@ public class SlimeController : MonoBehaviour
         
         ApplyMovement();
 
-        
+        ApplyReboundForce();
     }
 
     private void CheckCollisions()
