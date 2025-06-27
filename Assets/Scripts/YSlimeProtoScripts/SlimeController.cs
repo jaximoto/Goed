@@ -44,8 +44,8 @@ public class SlimeController : MonoBehaviour
     public float chargeMax;
     public float currCharge;
 
-    public float chargeFrequency;
-    public float shootFrequency;
+    //public float chargeFrequency;
+    //public float shootFrequency;
     public float shootMultiplier;
 
     public bool ChargeHeld; //was launchHeld
