@@ -212,7 +212,7 @@ MonoBehaviour:
   _hingeConnectedAnchors: []
   _hingeAnchors: []
   _pointTargets: []
-  reboundStrength: 10
+  reboundStrength: 30
   groundCheckIgnoreLayers:
     serializedVersion: 2
     m_Bits: 64

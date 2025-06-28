@@ -369,14 +369,14 @@ public class SlimeController : MonoBehaviour
                 {
                     Debug.DrawRay(currP.position, currToCore, Color.green);
                     currP.GetComponent<Collider2D>().isTrigger = true;
-                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore);
+                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore, ForceMode2D.Impulse);
                 }
                 else currP.GetComponent<Collider2D>().isTrigger = false;
                 RaycastHit2D nextHit = Physics2D.Raycast(nextP.position, nextToCore.normalized, nextToCore.magnitude, ~groundCheckIgnoreLayers.value);
                 if (nextHit)
                 {    
                     Debug.DrawRay(nextP.position, nextToCore, Color.green);
-                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore);
+                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore, ForceMode2D.Impulse);
                     nextP.GetComponent<Collider2D>().isTrigger = true;
                 }
                 else nextP.GetComponent<Collider2D>().isTrigger = false;
