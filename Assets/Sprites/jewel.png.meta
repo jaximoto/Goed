@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      jewel_0: -4630073415941564495
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

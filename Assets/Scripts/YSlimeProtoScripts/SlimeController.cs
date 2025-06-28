@@ -443,7 +443,7 @@ public class SlimeController : MonoBehaviour
         if (!_grounded && groundHit) 
         {
             _grounded = true;
-            //_bufferedJumpUsable = true;
+            _bufferedJumpUsable = true;
             //_endedJumpEarly = false;
             // Can call grounded change event
         }
