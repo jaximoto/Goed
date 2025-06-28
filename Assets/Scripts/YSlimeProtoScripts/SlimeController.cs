@@ -67,8 +67,8 @@ public class SlimeController : MonoBehaviour
 
     //Rebounding Stuff
     public Vector3[] _pointTargets;
-    public float reboundStrength;
-
+    public float reboundStrength, joinCrossStrength, expelStrength;
+    private bool _currHit, _nextHit;
     
     // Collison
     private bool _cachedQueryStartInColliders;
@@ -326,13 +326,13 @@ public class SlimeController : MonoBehaviour
             points[i].GetComponent<Rigidbody2D>().AddForce(targetDir * reboundMult, ForceMode2D.Impulse);
         }
     }
-    
+
     void CheckBetween()
     {
         for (int i = 0; i < points.Count; i++)
         {
             Transform currP, nextP;
-            
+
             if (i == points.Count - 1)
             {
                 currP = points[i].transform;
@@ -341,7 +341,7 @@ public class SlimeController : MonoBehaviour
             else
             {
                 currP = points[i].transform;
-                nextP = points[i+1].transform;
+                nextP = points[i + 1].transform;
             }
 
             Vector3 targetDir = nextP.position - currP.position;
@@ -357,33 +357,42 @@ public class SlimeController : MonoBehaviour
                 Debug.DrawRay(currP.position, perpForce, Color.black);
                 Debug.DrawRay(nextP.position, perpForce, Color.black);
 
-                currP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
-                nextP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
+                currP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
+                nextP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
 
                 //
                 Vector3 currToCore = gameObject.transform.position - currP.position;
                 Vector3 nextToCore = gameObject.transform.position - nextP.position;
 
                 RaycastHit2D currHit = Physics2D.Raycast(currP.position, currToCore.normalized, currToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                _currHit = currHit;
                 if (currHit)
                 {
                     Debug.DrawRay(currP.position, currToCore, Color.green);
                     currP.GetComponent<Collider2D>().isTrigger = true;
-                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore, ForceMode2D.Impulse);
+                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore * expelStrength, ForceMode2D.Impulse);
                 }
                 else currP.GetComponent<Collider2D>().isTrigger = false;
                 RaycastHit2D nextHit = Physics2D.Raycast(nextP.position, nextToCore.normalized, nextToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                _nextHit = nextHit;
                 if (nextHit)
-                {    
+                { 
                     Debug.DrawRay(nextP.position, nextToCore, Color.green);
-                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore, ForceMode2D.Impulse);
+                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore * expelStrength, ForceMode2D.Impulse);
                     nextP.GetComponent<Collider2D>().isTrigger = true;
                 }
-                else nextP.GetComponent<Collider2D>().isTrigger = false;
+                else nextP.GetComponent<Collider2D>().isTrigger = false; 
             }
+
+            else 
+            {
+                if (!_currHit && currP.GetComponent<Collider2D>().isTrigger) currP.GetComponent<Collider2D>().isTrigger = false;
+                if (!_nextHit && nextP.GetComponent<Collider2D>().isTrigger) nextP.GetComponent<Collider2D>().isTrigger = false;
+
+            }
+
         }
     }
-    
 
 
     //-------------------------------END JASPER CONTAMINATED ZONE-----------------

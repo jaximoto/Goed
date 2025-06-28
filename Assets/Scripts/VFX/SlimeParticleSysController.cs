@@ -26,7 +26,7 @@ public class SlimeParticleSysController : MonoBehaviour
         {
             _particleSystem = GetComponent<ParticleSystem>();
             _particleSystem.transform.position = _slimeController.transform.position + (Vector3.down * gameObject.transform.parent.localScale.x);
-            _particleSystem.transform.up = Vector3.down; 
+            _particleSystem.transform.up = Vector3.up; 
         }
     }
 
