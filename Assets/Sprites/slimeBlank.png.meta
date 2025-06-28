@@ -1,31 +1,10 @@
 fileFormatVersion: 2
-guid: bca45c551b9be8248a9d73a58adaa244
+guid: 5d08c505300cf4743a2359e921c4265c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8069619478552258361
-    second: slime1_0
-  - first:
-      213: -3041987457767028285
-    second: slime1_1
-  - first:
-      213: -2851724377359858702
-    second: slime1_2
-  - first:
-      213: 8666801654570291683
-    second: slime1_3
-  - first:
-      213: 4716848356589353756
-    second: slime1_4
-  - first:
-      213: 5794092588957780287
-    second: slime1_5
-  - first:
-      213: 4097260106649167521
-    second: slime1_6
-  - first:
-      213: 8239696598333894049
-    second: slime1_7
+      213: -4295668224464571574
+    second: slimeBlank_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -147,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: slime1_2
+      name: slimeBlank_0
       rect:
         serializedVersion: 2
-        x: 977
-        y: 451
-        width: 227
-        height: 67
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f3c422b9c3ac68d0800000000000000
-      internalID: -2851724377359858702
+      spriteID: a433bdf5288b264c0800000000000000
+      internalID: -4295668224464571574
       vertices: []
       indices: 
       edges: []
@@ -172,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 329831ad6e054b144ab314aace3c20c9
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -182,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      slime1_2: -2851724377359858702
+      slimeBlank_0: -4295668224464571574
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
