@@ -428,7 +428,7 @@ public class SlimeController : MonoBehaviour
             ExecuteJump();
             // interupting
 
-            SoundManager.PlayRandomSoundPitch(SoundType.JUMP, .1f, true);
+            SoundManager.PlayRandomSoundPitch(SoundType.JUMP, .1f, true, .9f, 1.5f);
         }
         
 
