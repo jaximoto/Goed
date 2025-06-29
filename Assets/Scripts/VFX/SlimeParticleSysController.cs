@@ -5,7 +5,7 @@ public class SlimeParticleSysController : MonoBehaviour
 {
     SlimeController _slimeController;
     ParticleSystem _particleSystem;
-    
+    bool die;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +19,7 @@ public class SlimeParticleSysController : MonoBehaviour
     void Update()
     {
         SpawnerToGround();
+        
     }
 
     //-----------------------SLIME WALK PARTICLES--------------------
@@ -44,7 +45,10 @@ public class SlimeParticleSysController : MonoBehaviour
 
 
 
-
+    void DeathParticles()
+    {
+        
+    }
 
 
     //-----------------------SLIME IMPACT PARTICLES--------------------
