@@ -30,12 +30,12 @@ public class ImpactParticles : MonoBehaviour
         float diff = rb.linearVelocity.magnitude - _velocity.magnitude;
         if (Mathf.Abs(diff) >= 5)
         {
-            Debug.Log($"if and diff is {diff}");
+            //Debug.Log($"if and diff is {diff}");
             _particleSystem.Play();
         }
         else
         {
-            Debug.Log($"else and diff is {diff}");
+            //Debug.Log($"else and diff is {diff}");
             
         }
         _velocity = rb.linearVelocity;
