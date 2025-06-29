@@ -424,14 +424,7 @@ public class SlimeController : MonoBehaviour
             return;
 
         if (_grounded)
-        {
             ExecuteJump();
-            // interupting
-
-            SoundManager.PlayRandomSoundPitch(SoundType.JUMP, .1f, true, .9f, 1.5f);
-        }
-        
-
 
         _jumpToConsume = false;
     }
@@ -442,7 +435,6 @@ public class SlimeController : MonoBehaviour
         _timeJumpWasPressed = 0;
         _bufferedJumpUsable = false;
         _frameVelocity.y = JumpPower;
-        
         //Jumped?.Invoke();
     }
 
@@ -506,8 +498,6 @@ public class SlimeController : MonoBehaviour
         else if(_grounded && !groundHit)
         {
             _grounded = false;
-           
-
             //_frameLeftGrounded = _time;
             //GroundedChanged?.Invoke(false, 0);
         }
@@ -527,12 +517,6 @@ public class SlimeController : MonoBehaviour
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
-            
-            //SFX
-            if (_grounded) 
-            {
-                SoundManager.PlayRandomSoundPitch(SoundType.SLIMESTEPS, .07f, false, .8f, 1.2f);
-            }
             CheckWalkLoss();
             WalkSlimeLoss();
         }

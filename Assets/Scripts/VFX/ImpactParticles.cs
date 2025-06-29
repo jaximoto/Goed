@@ -6,13 +6,12 @@ public class ImpactParticles : MonoBehaviour
     Rigidbody2D rb;
     ParticleSystem _particleSystem;
     Vector2 _velocity;
-    bool grounded;
+    public float emitMin, emitMax;
     void Start()
     {
         _slimeController = gameObject.transform.parent.GetComponent<SlimeController>();
         rb = _slimeController.GetComponent<Rigidbody2D>();
         _particleSystem = gameObject.GetComponent<ParticleSystem>();
-        grounded = _slimeController._grounded;
 
     }
 
@@ -23,7 +22,7 @@ public class ImpactParticles : MonoBehaviour
 
     }
 
-    
+    //-----------------------SLIME WALK PARTICLES--------------------
 
     void SpawnOnVel()
     {
@@ -33,8 +32,6 @@ public class ImpactParticles : MonoBehaviour
         {
             //Debug.Log($"if and diff is {diff}");
             _particleSystem.Play();
-            if(Mathf.Abs(diff) < 18)
-                SoundManager.PlayRandomSoundPitch(SoundType.COLLIDE, .05f, true);
         }
         else
         {
