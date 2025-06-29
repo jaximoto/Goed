@@ -20,7 +20,7 @@ public class JewelController : MonoBehaviour
         {
             rb.simulated = true;
             deathVel = _slimeController.GetComponent<Rigidbody2D>().linearVelocity/2;
-            deathAngVel = _slimeController.GetComponent<Rigidbody2D>().angularVelocity;
+            deathAngVel = _slimeController.GetComponent<Rigidbody2D>().angularVelocity * 10;
             rb.AddForce(deathVel, ForceMode2D.Impulse);
             rb.AddTorque(deathAngVel, ForceMode2D.Impulse);
         }
@@ -69,8 +69,4 @@ public class JewelController : MonoBehaviour
     }
 
 
-    void VelocitySwap()
-    {
-
-    }
 }
