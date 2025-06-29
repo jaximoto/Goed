@@ -1,5 +1,7 @@
-using UnityEngine;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine;
+using UnityEngine.Audio;
 public enum SoundType
 {
     LAND,
@@ -70,8 +72,16 @@ public class SoundManager : MonoBehaviour
         instance.SFXSource.PlayOneShot(randomClip, volume);
     }
 
-    public static void PlayRandomSoundPitch(SoundType sound, float volume = 1.0f, float minPitch = 0.9f, float maxPitch = 1.3f)
+    
+    
+    public static void PlayRandomSoundPitch(SoundType sound, float volume = 1.0f, bool interupting = false, float minPitch = 0.9f, float maxPitch = 1.3f)
     {
+       
+
+       
+        // if clip is over halfway done, cancel it
+        if (instance.SFXSource.isPlaying && !interupting) return;
+        
         AudioClip[] clips = instance.soundList[(int)sound].Sounds;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
 
@@ -79,8 +89,10 @@ public class SoundManager : MonoBehaviour
         instance.SFXSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
         instance.SFXSource.PlayOneShot(randomClip, volume);
         instance.SFXSource.pitch = originalPitch;
+        
     }
 
+  
 
 
     public static void PlayMusic(SoundType sound, float volume = 1.0f)
