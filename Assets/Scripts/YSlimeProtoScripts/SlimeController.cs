@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.WSA;
 using static Unity.VisualScripting.Metadata;
 using static UnityEngine.ProBuilder.AutoUnwrapSettings;
@@ -37,6 +38,8 @@ public class SlimeController : MonoBehaviour
     public float JumpBuffer = .2f;
     public float JumpPower = 36;
     public float GForce;
+
+    public bool levelEnding;
 
     // Jewel Launch 
     public bool deBone; // turn into off taking input???
@@ -81,7 +84,7 @@ public class SlimeController : MonoBehaviour
         public Vector2 Move;
         public bool JumpDown;
         public bool JumpHeld;
-
+ 
         //Jewel shoot stuff
         public Vector2 ChargeDir; //was chargeVector
         
@@ -111,6 +114,7 @@ public class SlimeController : MonoBehaviour
     }
 
     // --------------------------UPDATE METHODS------------------
+    bool RDown;
     void Update()
     {
         _time += Time.deltaTime;
@@ -121,6 +125,17 @@ public class SlimeController : MonoBehaviour
 
         _proportion = transform.localScale.x / startSize;
         if (_proportion < 0.5f) SlimeDeath();
+        RDown = Input.GetKeyDown("r");
+        if (deBone && !levelEnding)
+        {
+            RestartLevel();
+        }
+    }
+
+    void RestartLevel()
+    {
+        Debug.Log($"press r? RDown = {RDown}");
+        if (RDown) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void GatherInput()
@@ -130,7 +145,7 @@ public class SlimeController : MonoBehaviour
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
             JumpDown = Input.GetButtonDown("Jump"),
             JumpHeld = Input.GetButton("Jump"),
-
+            
             ChargeDir = new Vector2(Input.GetAxisRaw("Horizontal2"), Input.GetAxisRaw("Vertical2")),
         };
 
@@ -208,12 +223,12 @@ public class SlimeController : MonoBehaviour
     {
         Vector2 moveDir = _frameInput.ChargeDir.normalized;
         currCharge += chargeDelta * Time.deltaTime;
-        Debug.Log($"adding force = {moveDir * currCharge}");
+        //Debug.Log($"adding force = {moveDir * currCharge}");
         gameObject.GetComponent<Rigidbody2D>().AddForce(moveDir * currCharge);
-        Debug.Log($"charge = {currCharge}");
+        //Debug.Log($"charge = {currCharge}");
         if(currCharge >= 200)
         {
-            Debug.Log("Wowzers");
+            //Debug.Log("Wowzers");
         }
     }
 
@@ -225,7 +240,7 @@ public class SlimeController : MonoBehaviour
         {
             ShotForce += points[i].GetComponents<SpringJoint2D>()[0].reactionForce;
         }
-        Debug.Log($"currcharge is {currCharge}");
+        //Debug.Log($"currcharge is {currCharge}");
         _frameVelocity.y = 0f;
         _frameVelocity += ShotForce * shootMultiplier;
         currCharge = 0;
@@ -306,7 +321,7 @@ public class SlimeController : MonoBehaviour
         if (_grounded)
         {
             distanceCovered = Mathf.Abs(_frameVelocity.x * Time.fixedDeltaTime);
-            Debug.Log($"distanceCovered = {distanceCovered}");
+            //Debug.Log($"distanceCovered = {distanceCovered}");
         }
     }
 
@@ -402,7 +417,7 @@ public class SlimeController : MonoBehaviour
         {
             slime -= drainRate * Time.deltaTime;
             gameObject.transform.localScale += new Vector3(0.25f,0.25f,0.25f) * drainRate * Time.deltaTime; 
-            Debug.Log($"slime = {slime}");
+            //Debug.Log($"slime = {slime}");
         }
         return slime;
     }

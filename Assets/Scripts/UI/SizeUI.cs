@@ -21,7 +21,7 @@ public class SizeUI : MonoBehaviour
     {
         if (proportion != _slimeController._proportion)
         {
-            Debug.Log($"proportion = {proportion}");
+            //Debug.Log($"proportion = {proportion}");
             proportion = _slimeController._proportion;
             circle.localScale = proportion * startSize;
         }
