@@ -715,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 202953441}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.008726558, w: 0.999962}
-  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3ee7d6e5c4e3142922419b020dd65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slimeAmount: 0.1
+  slimeAmount: 0.5
   drainSpeed: 0.1
   sliming: 0
 --- !u!212 &357079542
@@ -7676,7 +7676,7 @@ MonoBehaviour:
   chargeDelta: 100
   chargeMax: 0
   currCharge: 0
-  shootMultiplier: 0.1
+  shootMultiplier: 0.2
   ChargeHeld: 0
   ChargeUp: 0
   LaunchSpeed: 0
@@ -7687,6 +7687,7 @@ MonoBehaviour:
   lossMult: 0
   scaleMult: 0
   _proportion: 0
+  maxProp: 2
   _pointTargets: []
   reboundStrength: 30
   joinCrossStrength: 10
@@ -7849,7 +7850,7 @@ Transform:
   m_GameObject: {fileID: 1823367203}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8755881, y: -2.9572237, z: 0}
+  m_LocalPosition: {x: 0.36, y: -0.862, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8701,6 +8702,7 @@ MonoBehaviour:
   lossMult: 0
   scaleMult: 0.005
   _proportion: 0
+  maxProp: 0
   _pointTargets: []
   reboundStrength: 15
   joinCrossStrength: 0

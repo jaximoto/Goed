@@ -59,7 +59,7 @@ public class SlimeController : MonoBehaviour
     public float distanceCovered;
     public float lossMult, scaleMult;
 
-    public float _proportion;
+    public float _proportion, maxProp;
     float startSize;
 
     Vector3[] _hingeConnectedAnchors, _hingeAnchors;
@@ -226,7 +226,7 @@ public class SlimeController : MonoBehaviour
             ShotForce += points[i].GetComponents<SpringJoint2D>()[0].reactionForce;
         }
         Debug.Log($"currcharge is {currCharge}");
-        
+        _frameVelocity.y = 0f;
         _frameVelocity += ShotForce * shootMultiplier;
         currCharge = 0;
         ChargeUp = false;  
@@ -391,10 +391,10 @@ public class SlimeController : MonoBehaviour
 
     public float AddSlime(float slime, float drainRate)
     {
-        if (slime > 0)
+        if (slime > 0 && _proportion  < maxProp)
         {
             slime -= drainRate * Time.deltaTime;
-            gameObject.transform.localScale += Vector3.one * drainRate * Time.deltaTime; 
+            gameObject.transform.localScale += new Vector3(0.25f,0.25f,0.25f) * drainRate * Time.deltaTime; 
             Debug.Log($"slime = {slime}");
         }
         return slime;
