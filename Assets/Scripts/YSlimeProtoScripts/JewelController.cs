@@ -7,8 +7,8 @@ public class JewelController : MonoBehaviour
     float smooth = 1f;
     bool slimeConnected;
     Rigidbody2D rb;
-
-
+    Vector2 deathVel;
+    float deathAngVel;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); 
@@ -19,6 +19,10 @@ public class JewelController : MonoBehaviour
         if (!slimeConnected && !rb.simulated)
         {
             rb.simulated = true;
+            deathVel = _slimeController.GetComponent<Rigidbody2D>().linearVelocity/2;
+            deathAngVel = _slimeController.GetComponent<Rigidbody2D>().angularVelocity;
+            rb.AddForce(deathVel, ForceMode2D.Impulse);
+            rb.AddTorque(deathAngVel, ForceMode2D.Impulse);
         }
         if (slimeConnected)
         {
