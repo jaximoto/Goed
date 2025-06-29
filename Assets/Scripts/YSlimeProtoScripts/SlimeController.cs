@@ -450,7 +450,8 @@ public class SlimeController : MonoBehaviour
         
         ApplyMovement();
 
-        if (!deBone) { ApplyReboundForce(reboundStrength); CheckBetween(); }   
+        ApplyReboundForce(reboundStrength); 
+        CheckBetween();    
     }
 
     bool groundHit;
@@ -506,40 +507,30 @@ public class SlimeController : MonoBehaviour
     }
     private void HandleHorizontal()
     {
-        if (deBone)
+        if (_frameInput.Move.x == 0 || deBone)
         {
-            Debug.Log($"_grounded is {_grounded}");
-            var deceleration = _grounded ? jewelGroundDeceleration : jewelAirDeceleration;
+            var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-            Debug.Log($"_framevelocity is {_frameVelocity}");    
+            CheckWalkLoss();
+            WalkSlimeLoss();
         }
         else
         {
-            if (_frameInput.Move.x == 0)
-            {
-                var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
-                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-                CheckWalkLoss();
-                WalkSlimeLoss();
-            }
-            else
-            {
-                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
-                CheckWalkLoss();
-                WalkSlimeLoss();
-            }
+            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+            CheckWalkLoss();
+            WalkSlimeLoss();
         }
+
     }
     private void ApplyMovement()
     {
         _rb.linearVelocity = _frameVelocity;
-        if (!deBone) 
+
+        foreach (GameObject child in points)
         {
-            foreach (GameObject child in points)
-            {
-                child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
-            }
+            child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
         }
+
     }
 
     private void Gravity()
@@ -550,6 +541,7 @@ public class SlimeController : MonoBehaviour
         {
             _frameVelocity.y = GroundedGravity;
         }
+        /*
         else if (deBone && !_grounded)
         {
             var inAirGravity = jewelFallAcceleration;
@@ -557,6 +549,7 @@ public class SlimeController : MonoBehaviour
             _frameVelocity.y = GForce;
 
         }
+        */
         else
         {
             var inAirGravity = FallAcceleration;
