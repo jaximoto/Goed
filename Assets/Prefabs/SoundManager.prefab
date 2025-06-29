@@ -148,13 +148,16 @@ MonoBehaviour:
   - name: LAND
     sounds: []
   - name: COLLIDE
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: af6e3d43476c2fe4598721eeac7d776e, type: 3}
+    - {fileID: 8300000, guid: c9ded36d83bafe5468d306d2f75b490f, type: 3}
   - name: HURT
     sounds: []
   - name: LAUNCH
     sounds: []
   - name: JUMP
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 3f234ca90fe713c42aac112cdc957103, type: 3}
   - name: JEWELCOLLIDE
     sounds: []
   - name: JEWELROLL
