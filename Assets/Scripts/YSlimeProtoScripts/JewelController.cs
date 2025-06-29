@@ -5,16 +5,33 @@ public class JewelController : MonoBehaviour
     public SlimeController _slimeController;
     Quaternion target;
     float smooth = 1f;
-    // Update is called once per frame
+    bool slimeConnected;
+    Rigidbody2D rb;
+
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>(); 
+    }
     void Update()
     {
-        MoveToCore();
-        RotateJewel();
+        slimeConnected = !_slimeController.deBone;
+        if (!slimeConnected && !rb.simulated)
+        {
+            rb.simulated = true;
+        }
+        if (slimeConnected)
+        {
+            MoveToCore();
+            RotateJewel();
+        }
     }
 
     void LateUpdate()
     {
-        MoveToCore();
+        slimeConnected = !_slimeController.deBone;
+        if (slimeConnected) MoveToCore();
+    
     }
 
 
@@ -48,5 +65,8 @@ public class JewelController : MonoBehaviour
     }
 
 
+    void VelocitySwap()
+    {
 
+    }
 }

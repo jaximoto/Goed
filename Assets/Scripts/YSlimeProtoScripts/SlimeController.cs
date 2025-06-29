@@ -234,12 +234,19 @@ public class SlimeController : MonoBehaviour
 
     void DeBone()
     {
+
+        deBone = true;
+        takingInput = false;
+
+        /* used to detach and despring
         for (int i = 0; i < points.Count; i++)
         {
             Debug.Log($"(i = {i}) debone reforce is {points[i].GetComponents<SpringJoint2D>()[0].reactionForce}");
             points[i].GetComponents<SpringJoint2D>()[0].enabled = false;
         }
         gameObject.transform.DetachChildren();
+    
+        */
     }
 
     //Scale multiplier for each joint
