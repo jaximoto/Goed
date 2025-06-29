@@ -345,22 +345,21 @@ public class SlimeController : MonoBehaviour
             }
 
             Vector3 targetDir = nextP.position - currP.position;
-            Debug.DrawRay(currP.position, targetDir, Color.yellow);
+            //Debug.DrawRay(currP.position, targetDir, Color.yellow);
 
             RaycastHit2D hit = Physics2D.Raycast(currP.position, targetDir.normalized, targetDir.magnitude, ~groundCheckIgnoreLayers.value);
             if (hit)
             {
-                Debug.Log($"hit {hit.transform.gameObject}");
-                Debug.Log($"Raycast hit between {currP} and {nextP}");
+                //Debug.Log($"hit {hit.transform.gameObject}");
+                //Debug.Log($"Raycast hit between {currP} and {nextP}");
                 Vector2 perpForce = Vector2.Perpendicular(targetDir);
 
-                Debug.DrawRay(currP.position, perpForce, Color.black);
-                Debug.DrawRay(nextP.position, perpForce, Color.black);
+                //Debug.DrawRay(currP.position, perpForce, Color.black);
+                //Debug.DrawRay(nextP.position, perpForce, Color.black);
 
                 currP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
                 nextP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
 
-                //
                 Vector3 currToCore = gameObject.transform.position - currP.position;
                 Vector3 nextToCore = gameObject.transform.position - nextP.position;
 
@@ -368,7 +367,7 @@ public class SlimeController : MonoBehaviour
                 _currHit = currHit;
                 if (currHit)
                 {
-                    Debug.DrawRay(currP.position, currToCore, Color.green);
+                    //Debug.DrawRay(currP.position, currToCore, Color.green);
                     currP.GetComponent<Collider2D>().isTrigger = true;
                     currP.GetComponent<Rigidbody2D>().AddForce(currToCore * expelStrength, ForceMode2D.Impulse);
                 }
@@ -377,7 +376,7 @@ public class SlimeController : MonoBehaviour
                 _nextHit = nextHit;
                 if (nextHit)
                 { 
-                    Debug.DrawRay(nextP.position, nextToCore, Color.green);
+                    //Debug.DrawRay(nextP.position, nextToCore, Color.green);
                     nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore * expelStrength, ForceMode2D.Impulse);
                     nextP.GetComponent<Collider2D>().isTrigger = true;
                 }
@@ -434,11 +433,13 @@ public class SlimeController : MonoBehaviour
         ApplyReboundForce(reboundStrength);
         CheckBetween();
     }
-
+    bool groundHit;
     private void CheckCollisions()
     {
         Physics2D.queriesStartInColliders = false;
-        Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+        //Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+
+        /*
         bool groundHit = Physics2D.CircleCast
             (
             origin,
@@ -447,6 +448,18 @@ public class SlimeController : MonoBehaviour
             GroundDistance,
             ~groundCheckIgnoreLayers.value
             );
+        */
+        int groundedCount = 0;
+        //We are gonna try and check ground collision for each particle
+        for (int i = 0; i < points.Count; i++)
+        {
+            Debug.DrawRay(points[i].transform.position, transform.localScale.x * Vector3.down * points[i].transform.localScale.x, Color.yellow);
+            bool groundRay = Physics2D.Raycast(points[i].transform.position, Vector3.down, transform.localScale.x * points[i].transform.localScale.x, ~groundCheckIgnoreLayers.value);
+            groundedCount += groundRay ? 1 : 0;
+        }
+        if (groundedCount > 0) groundHit = true;
+        else groundHit = false;
+
 
         // Landed on the Ground
         if (!_grounded && groundHit) 
