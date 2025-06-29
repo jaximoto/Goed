@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2b17141172a178b4d83be8971a5338b6
+guid: 5d08c505300cf4743a2359e921c4265c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6529992565953176737
-    second: particle_0
+      213: -4295668224464571574
+    second: slimeBlank_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -72,19 +72,6 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: particle_0
+      name: slimeBlank_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a4a49f24a13f9a50800000000000000
-      internalID: 6529992565953176737
+      spriteID: a433bdf5288b264c0800000000000000
+      internalID: -4295668224464571574
       vertices: []
       indices: 
       edges: []
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      particle_0: 6529992565953176737
+      slimeBlank_0: -4295668224464571574
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
