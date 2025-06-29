@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 2ac15ad26a9d0db4e8f5969b3155c075
+guid: 708f8b1adfa6f194aa207d7d08981bff
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4630073415941564495
-    second: jewel_0
-  - first:
-      213: -3988288903593118137
-    second: jewel_1
+      213: 1302723820812287101
+    second: Untitled_Artwork_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,10 +49,10 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 9
-  spritePivot: {x: 0.5410414, y: 0.5197864}
-  spritePixelsToUnits: 10
-  spriteBorder: {x: 868, y: 228, z: 714, w: 187}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -142,23 +139,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jewel_0
+      name: Untitled_Artwork_0
       rect:
         serializedVersion: 2
-        x: 864
-        y: 223
-        width: 345
-        height: 673
+        x: 173
+        y: 360
+        width: 1707
+        height: 539
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b7d2d662ccaebfb0800000000000000
-      internalID: -4630073415941564495
+      spriteID: d7cb4f3b964341210800000000000000
+      internalID: 1302723820812287101
       vertices: []
       indices: 
       edges: []
@@ -167,8 +164,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -177,9 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      jewel_0: -4630073415941564495
-      jewel_1: -3988288903593118137
-      jewel_2: -846342467
+      Untitled_Artwork_0: 1302723820812287101
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 2ac15ad26a9d0db4e8f5969b3155c075
+guid: 187135ed5cf9fc7479bf06eb2dd2d404
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4630073415941564495
-    second: jewel_0
-  - first:
-      213: -3988288903593118137
-    second: jewel_1
+      213: -4736304741182004336
+    second: newJewel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
-  spritePivot: {x: 0.5410414, y: 0.5197864}
-  spritePixelsToUnits: 10
-  spriteBorder: {x: 868, y: 228, z: 714, w: 187}
+  spritePivot: {x: 0.47541794, y: 0.54588664}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 59, y: 43, z: 71, w: 10}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -142,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jewel_0
+      name: newJewel_0
       rect:
         serializedVersion: 2
-        x: 864
-        y: 223
-        width: 345
-        height: 673
+        x: 58
+        y: 41
+        width: 128
+        height: 206
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b7d2d662ccaebfb0800000000000000
-      internalID: -4630073415941564495
+      spriteID: 09329d19ee3454eb0800000000000000
+      internalID: -4736304741182004336
       vertices: []
       indices: 
       edges: []
@@ -177,9 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      jewel_0: -4630073415941564495
-      jewel_1: -3988288903593118137
-      jewel_2: -846342467
+      newJewel_0: -4736304741182004336
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
