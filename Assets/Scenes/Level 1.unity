@@ -1488,7 +1488,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1602,7 +1602,9 @@ MonoBehaviour:
   - name: JEWELROLL
     sounds: []
   - name: SLIMESTEPS
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: e42e7b9970e009048b8661076fae42de, type: 3}
+    - {fileID: 8300000, guid: 7b1497edef5d5c445a178fcf48b6c2fb, type: 3}
   - name: Level1
     sounds:
     - {fileID: 8300000, guid: 3b51ea3d360271e499435230cd7fee1d, type: 3}
@@ -1619,7 +1621,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

@@ -70,12 +70,26 @@ public class SoundManager : MonoBehaviour
         instance.SFXSource.PlayOneShot(randomClip, volume);
     }
 
+    public static void PlayRandomSoundPitch(SoundType sound, float volume = 1.0f, float minPitch = 0.9f, float maxPitch = 1.3f)
+    {
+        AudioClip[] clips = instance.soundList[(int)sound].Sounds;
+        AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+
+        float originalPitch = instance.SFXSource.pitch;
+        instance.SFXSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+        instance.SFXSource.PlayOneShot(randomClip, volume);
+        instance.SFXSource.pitch = originalPitch;
+    }
+
+
+
     public static void PlayMusic(SoundType sound, float volume = 1.0f)
     {
         AudioClip[] clips = instance.soundList[(int)sound].Sounds;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
         instance.BGMSource.PlayOneShot(randomClip, volume);
     }
+
 
 #if UNITY_EDITOR
     private void OnEnable()
