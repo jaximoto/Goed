@@ -39,7 +39,7 @@ public class SlimeController : MonoBehaviour
     public float GForce;
 
     // Jewel Launch 
-    public bool deBone = false; // turn into off taking input???
+    public bool deBone; // turn into off taking input???
     public float chargeDelta;
     public float chargeMax;
     public float currCharge;
@@ -59,16 +59,17 @@ public class SlimeController : MonoBehaviour
     public float distanceCovered;
     public float lossMult, scaleMult;
 
-    public Vector3[] _hingeConnectedAnchors;
-    public Vector3[] _hingeAnchors;
-    public Vector3[][] _connectedAnchors;
-    public Vector3[][] _anchors;
-    public float[][] _distance;
+    public float _proportion, maxProp;
+    float startSize;
+
+    Vector3[] _hingeConnectedAnchors, _hingeAnchors;
+    Vector3[][] _connectedAnchors, _anchors;
+    float[][] _distance;
 
     //Rebounding Stuff
     public Vector3[] _pointTargets;
-    public float reboundStrength;
-
+    public float reboundStrength, joinCrossStrength, expelStrength;
+    private bool _currHit, _nextHit;
     
     // Collison
     private bool _cachedQueryStartInColliders;
@@ -104,6 +105,9 @@ public class SlimeController : MonoBehaviour
 
         ConfigureAnchors();
         GetReboundTargets();
+
+        startSize = transform.localScale.x;
+
     }
 
     // --------------------------UPDATE METHODS------------------
@@ -114,8 +118,9 @@ public class SlimeController : MonoBehaviour
         {
             GatherInput();
         }
-        
 
+        _proportion = transform.localScale.x / startSize;
+        if (_proportion < 0.5f) SlimeDeath();
     }
 
     private void GatherInput()
@@ -171,7 +176,6 @@ public class SlimeController : MonoBehaviour
         } 
     }
 
-
     void OnDrawGizmos()
     {
         //Gather Component Vectors
@@ -200,7 +204,6 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-
     void ChargeShot()
     {
         Vector2 moveDir = _frameInput.ChargeDir.normalized;
@@ -222,25 +225,28 @@ public class SlimeController : MonoBehaviour
         {
             ShotForce += points[i].GetComponents<SpringJoint2D>()[0].reactionForce;
         }
-        DeBone();
         Debug.Log($"currcharge is {currCharge}");
-        
+        _frameVelocity.y = 0f;
         _frameVelocity += ShotForce * shootMultiplier;
         currCharge = 0;
-        deBone = true;
-        ChargeUp = false;
-        
+        ChargeUp = false;  
     }
-
 
     void DeBone()
     {
+
+        deBone = true;
+        takingInput = false;
+
+        /* used to detach and despring
         for (int i = 0; i < points.Count; i++)
         {
             Debug.Log($"(i = {i}) debone reforce is {points[i].GetComponents<SpringJoint2D>()[0].reactionForce}");
             points[i].GetComponents<SpringJoint2D>()[0].enabled = false;
         }
         gameObject.transform.DetachChildren();
+    
+        */
     }
 
     //Scale multiplier for each joint
@@ -256,7 +262,6 @@ public class SlimeController : MonoBehaviour
             _hingeConnectedAnchors[i] = points[i].GetComponent<HingeJoint2D>().connectedAnchor;
             _hingeAnchors[i] = points[i].GetComponent<HingeJoint2D>().anchor;
             points[i].GetComponent<HingeJoint2D>().autoConfigureConnectedAnchor = false;
-
             _connectedAnchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _anchors[i] = new Vector3[points[i].GetComponents<SpringJoint2D>().Length];
             _distance[i] = new float[points[i].GetComponents<SpringJoint2D>().Length];
@@ -305,7 +310,6 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-
     //slime realigning force
     void GetReboundTargets()
     {
@@ -326,13 +330,13 @@ public class SlimeController : MonoBehaviour
             points[i].GetComponent<Rigidbody2D>().AddForce(targetDir * reboundMult, ForceMode2D.Impulse);
         }
     }
-    
+
     void CheckBetween()
     {
         for (int i = 0; i < points.Count; i++)
         {
             Transform currP, nextP;
-            
+
             if (i == points.Count - 1)
             {
                 currP = points[i].transform;
@@ -341,49 +345,73 @@ public class SlimeController : MonoBehaviour
             else
             {
                 currP = points[i].transform;
-                nextP = points[i+1].transform;
+                nextP = points[i + 1].transform;
             }
 
             Vector3 targetDir = nextP.position - currP.position;
-            Debug.DrawRay(currP.position, targetDir, Color.yellow);
+            //Debug.DrawRay(currP.position, targetDir, Color.yellow);
 
             RaycastHit2D hit = Physics2D.Raycast(currP.position, targetDir.normalized, targetDir.magnitude, ~groundCheckIgnoreLayers.value);
             if (hit)
             {
-                Debug.Log($"hit {hit.transform.gameObject}");
-                Debug.Log($"Raycast hit between {currP} and {nextP}");
+                //Debug.Log($"hit {hit.transform.gameObject}");
+                //Debug.Log($"Raycast hit between {currP} and {nextP}");
                 Vector2 perpForce = Vector2.Perpendicular(targetDir);
 
-                Debug.DrawRay(currP.position, perpForce, Color.black);
-                Debug.DrawRay(nextP.position, perpForce, Color.black);
+                //Debug.DrawRay(currP.position, perpForce, Color.black);
+                //Debug.DrawRay(nextP.position, perpForce, Color.black);
 
-                currP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
-                nextP.GetComponent<Rigidbody2D>().AddForce(perpForce, ForceMode2D.Impulse);
+                currP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
+                nextP.GetComponent<Rigidbody2D>().AddForce(perpForce * joinCrossStrength, ForceMode2D.Impulse);
 
-                //
                 Vector3 currToCore = gameObject.transform.position - currP.position;
                 Vector3 nextToCore = gameObject.transform.position - nextP.position;
 
                 RaycastHit2D currHit = Physics2D.Raycast(currP.position, currToCore.normalized, currToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                _currHit = currHit;
                 if (currHit)
                 {
-                    Debug.DrawRay(currP.position, currToCore, Color.green);
+                    //Debug.DrawRay(currP.position, currToCore, Color.green);
                     currP.GetComponent<Collider2D>().isTrigger = true;
-                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore, ForceMode2D.Impulse);
+                    currP.GetComponent<Rigidbody2D>().AddForce(currToCore * expelStrength, ForceMode2D.Impulse);
                 }
                 else currP.GetComponent<Collider2D>().isTrigger = false;
                 RaycastHit2D nextHit = Physics2D.Raycast(nextP.position, nextToCore.normalized, nextToCore.magnitude, ~groundCheckIgnoreLayers.value);
+                _nextHit = nextHit;
                 if (nextHit)
-                {    
-                    Debug.DrawRay(nextP.position, nextToCore, Color.green);
-                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore, ForceMode2D.Impulse);
+                { 
+                    //Debug.DrawRay(nextP.position, nextToCore, Color.green);
+                    nextP.GetComponent<Rigidbody2D>().AddForce(nextToCore * expelStrength, ForceMode2D.Impulse);
                     nextP.GetComponent<Collider2D>().isTrigger = true;
                 }
-                else nextP.GetComponent<Collider2D>().isTrigger = false;
+                else nextP.GetComponent<Collider2D>().isTrigger = false; 
+            }
+
+            else 
+            {
+                if (!_currHit && currP.GetComponent<Collider2D>().isTrigger) currP.GetComponent<Collider2D>().isTrigger = false;
+                if (!_nextHit && nextP.GetComponent<Collider2D>().isTrigger) nextP.GetComponent<Collider2D>().isTrigger = false;
+
             }
         }
     }
-    
+
+    public float AddSlime(float slime, float drainRate)
+    {
+        if (slime > 0 && _proportion  < maxProp)
+        {
+            slime -= drainRate * Time.deltaTime;
+            gameObject.transform.localScale += new Vector3(0.25f,0.25f,0.25f) * drainRate * Time.deltaTime; 
+            Debug.Log($"slime = {slime}");
+        }
+        return slime;
+    }
+
+    void SlimeDeath()
+    {
+        DeBone();
+    }
+
 
 
     //-------------------------------END JASPER CONTAMINATED ZONE-----------------
@@ -422,14 +450,17 @@ public class SlimeController : MonoBehaviour
         
         ApplyMovement();
 
-        ApplyReboundForce(reboundStrength);
-        CheckBetween();
+        ApplyReboundForce(reboundStrength); 
+        CheckBetween();    
     }
 
+    bool groundHit;
     private void CheckCollisions()
     {
         Physics2D.queriesStartInColliders = false;
-        Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+        //Vector2 origin = _col.bounds.center + Vector3.up * 0.5f;
+
+        /*
         bool groundHit = Physics2D.CircleCast
             (
             origin,
@@ -438,6 +469,21 @@ public class SlimeController : MonoBehaviour
             GroundDistance,
             ~groundCheckIgnoreLayers.value
             );
+        */
+        int groundedCount = 0;
+        //We are gonna try and check ground collision for each particle
+        for (int i = 0; i < points.Count; i++)
+        {
+            //Debug.DrawRay(points[i].transform.position, transform.localScale.x * Vector3.down * points[i].transform.localScale.x, Color.yellow);
+            bool groundRay = Physics2D.Raycast(points[i].transform.position, 
+                Vector3.down, 
+                transform.localScale.x * points[i].transform.localScale.x, 
+                ~groundCheckIgnoreLayers.value);
+            groundedCount += groundRay ? 1 : 0;
+        }
+        if (groundedCount > 0) groundHit = true;
+        else groundHit = false;
+
 
         // Landed on the Ground
         if (!_grounded && groundHit) 
@@ -461,40 +507,30 @@ public class SlimeController : MonoBehaviour
     }
     private void HandleHorizontal()
     {
-        if (deBone)
+        if (_frameInput.Move.x == 0 || deBone)
         {
-            Debug.Log($"_grounded is {_grounded}");
-            var deceleration = _grounded ? jewelGroundDeceleration : jewelAirDeceleration;
+            var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-            Debug.Log($"_framevelocity is {_frameVelocity}");    
+            CheckWalkLoss();
+            WalkSlimeLoss();
         }
         else
         {
-            if (_frameInput.Move.x == 0)
-            {
-                var deceleration = _grounded ? GroundDeceleration : AirDeceleration;
-                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-                CheckWalkLoss();
-                WalkSlimeLoss();
-            }
-            else
-            {
-                _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
-                CheckWalkLoss();
-                WalkSlimeLoss();
-            }
+            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+            CheckWalkLoss();
+            WalkSlimeLoss();
         }
+
     }
     private void ApplyMovement()
     {
         _rb.linearVelocity = _frameVelocity;
-        if (!deBone) 
+
+        foreach (GameObject child in points)
         {
-            foreach (GameObject child in points)
-            {
-                child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
-            }
+            child.GetComponent<Rigidbody2D>().linearVelocity = _frameVelocity;
         }
+
     }
 
     private void Gravity()
@@ -505,6 +541,7 @@ public class SlimeController : MonoBehaviour
         {
             _frameVelocity.y = GroundedGravity;
         }
+        /*
         else if (deBone && !_grounded)
         {
             var inAirGravity = jewelFallAcceleration;
@@ -512,6 +549,7 @@ public class SlimeController : MonoBehaviour
             _frameVelocity.y = GForce;
 
         }
+        */
         else
         {
             var inAirGravity = FallAcceleration;

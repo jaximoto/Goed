@@ -2,15 +2,31 @@ using UnityEngine;
 
 public class SlimePickup : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float slimeAmount, drainSpeed;
+    public bool sliming;
+    SlimeController _slimeController;
+
+    void Awake()
     {
-        
+        _slimeController = GameObject.FindAnyObjectByType<SlimeController>(); 
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.layer == 6) sliming = true; 
+    }
+
+
+    private void Update()
+    {
+        if (sliming) slimeAmount = _slimeController.AddSlime(slimeAmount, drainSpeed); 
+    }
+
+    void OnTriggerExit2D()
     {
         
+        sliming = false;
     }
+
+    
 }
