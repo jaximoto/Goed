@@ -1,9 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndLevelDetector : MonoBehaviour
 {
     ExitManager em;
-
     private void Awake()
     {
         em = transform.parent.parent.GetComponent<ExitManager>();
@@ -15,6 +15,8 @@ public class EndLevelDetector : MonoBehaviour
         {
             Debug.Log("slimeHit");
             em.EndLevel();
+            collision.gameObject.GetComponentInParent<SlimeController>().deBone = true;
         }
     }
+
 }
