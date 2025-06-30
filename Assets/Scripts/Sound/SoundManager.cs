@@ -10,6 +10,7 @@ public enum SoundType
     JEWELCOLLIDE,
     JEWELROLL,
     SLIMESTEPS,
+    TITLE,
     Level1
     
 }
