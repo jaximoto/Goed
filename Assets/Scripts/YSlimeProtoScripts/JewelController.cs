@@ -1,13 +1,17 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
+using UnityEngine.SceneManagement;
 
 public class JewelController : MonoBehaviour
 {
     public SlimeController _slimeController;
     Quaternion target;
     float smooth = 1f;
-    bool slimeConnected;
+    bool slimeConnected, RDown;
     Rigidbody2D rb;
-    Vector2 deathVel;
+    Vector2 deathVel, deltaDir;
+    float lastX, lastY;
+
     float deathAngVel;
     public float angMult, linMult;
 
@@ -17,12 +21,14 @@ public class JewelController : MonoBehaviour
     }
     void Update()
     {
+
         slimeConnected = !_slimeController.deBone;
         if (!slimeConnected && !rb.simulated)
         {
             rb.simulated = true;
-            deathVel = _slimeController.GetComponent<Rigidbody2D>().linearVelocity * linMult;
-            deathAngVel = _slimeController.GetComponent<Rigidbody2D>().angularVelocity * angMult;
+            deathVel = _slimeController.GetComponent<Rigidbody2D>().linearVelocity;
+            deathAngVel = _slimeController.GetComponent<Rigidbody2D>().angularVelocity;
+            Debug.Log($"deathVel = {deathVel} deathAngVel = {deathVel.x} * {angMult} = {deathAngVel}, deltaDir.x = {deltaDir.x}");
             rb.AddForce(deathVel, ForceMode2D.Impulse);
             rb.AddTorque(deathAngVel, ForceMode2D.Impulse);
         }
@@ -31,8 +37,27 @@ public class JewelController : MonoBehaviour
             MoveToCore();
             RotateJewel();
         }
-    }
+        RDown = Input.GetKeyDown("r");
+        if (_slimeController.deBone && !_slimeController.levelEnding)
+        {
+            RestartLevel();
+        }
 
+        
+    }
+    
+    //move Text Display over here -------------------
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "pickup")
+        {
+            Reslime();
+        }
+    }
+    void Reslime()
+    {
+        Debug.Log("Resliming");
+    }
     void LateUpdate()
     {
         slimeConnected = !_slimeController.deBone;
@@ -70,5 +95,11 @@ public class JewelController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
     }
 
+    void RestartLevel()
+    {
+        Debug.Log($"press r? RDown = {RDown}");
+        if (RDown) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
 
 }
