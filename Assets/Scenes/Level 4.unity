@@ -242,6 +242,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_Size.y
+      value: 0.44312447
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.3493885
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2743813558857070645, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.6265712
@@ -293,6 +309,10 @@ PrefabInstance:
     - target: {fileID: 6672896127276512349, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: m_SortingOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6922147313668388521, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: drainSpeed
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6922147313668388521, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: slimeAmount
@@ -1329,7 +1349,7 @@ Transform:
   m_GameObject: {fileID: 1265604371}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.56, y: 3.28, z: 0}
+  m_LocalPosition: {x: 5.45, y: 3.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1406,7 +1426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 428096207}
-  requiredWeight: 0.75
+  requiredWeight: 0.5
   springBackSpeed: 1
   door: {fileID: 856029533}
 --- !u!1 &1537347609
@@ -1915,6 +1935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grate_0
       objectReference: {fileID: 0}
+    - target: {fileID: 1651185053657451513, guid: ac0278114ee0fd749bfe7a57fb9c503f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2381,6 +2405,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_Size.y
+      value: 0.29527903
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.52877307
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 697181369399879734, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.22
+      objectReference: {fileID: 0}
     - target: {fileID: 2743813558857070645, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.16042459
@@ -2432,6 +2472,10 @@ PrefabInstance:
     - target: {fileID: 6672896127276512349, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: m_SortingOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6922147313668388521, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
+      propertyPath: drainSpeed
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6922147313668388521, guid: 9ba54cc4c8c36bc41868300b69a5e448, type: 3}
       propertyPath: slimeAmount

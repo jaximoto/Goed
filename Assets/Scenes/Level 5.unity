@@ -3475,7 +3475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5470783570055835207, guid: 4a64fd48c1fb1b34291de0a74a1a0a62, type: 3}
       propertyPath: sceneToLoad
-      value: Level 4
+      value: End Screen
       objectReference: {fileID: 0}
     - target: {fileID: 6222019334677363560, guid: 4a64fd48c1fb1b34291de0a74a1a0a62, type: 3}
       propertyPath: m_LocalPosition.x

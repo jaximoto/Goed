@@ -1724,7 +1724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slimeAmount: 100
-  drainSpeed: 0.1
+  drainSpeed: 0.3
   sliming: 0
 --- !u!61 &826315896
 BoxCollider2D:

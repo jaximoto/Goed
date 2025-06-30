@@ -1906,6 +1906,10 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 623583915}
+    - target: {fileID: 964323807997006637, guid: 5a653ec31d7941d4182bcb34710af238, type: 3}
+      propertyPath: lossMult
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3717583841900159459, guid: 5a653ec31d7941d4182bcb34710af238, type: 3}
       propertyPath: m_Creator
       value: 
@@ -1920,7 +1924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8212696863871692840, guid: 5a653ec31d7941d4182bcb34710af238, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.42
+      value: -9.61
       objectReference: {fileID: 0}
     - target: {fileID: 8212696863871692840, guid: 5a653ec31d7941d4182bcb34710af238, type: 3}
       propertyPath: m_LocalPosition.y
