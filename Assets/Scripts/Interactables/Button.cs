@@ -1,26 +1,20 @@
 using UnityEngine;
-
+using System.Collections;
 public class Button : MonoBehaviour
 {
-    bool pushin;
+    bool pushin, textRendering;
     float prop;
-    float requiredWeight;
+    public GameObject text;
+    public float requiredWeight;
     public float springBackSpeed;
     float yStart;
     float targetY;
+    public Hinge door;
+
     private void Awake()
     {
         yStart = transform.position.y;
         targetY = yStart - 0.15f;
-    }
-
-    private void Update()
-    {
-        if(!pushin)
-        {
-            SpringBack();
-
-        }
     }
 
 
@@ -33,8 +27,7 @@ public class Button : MonoBehaviour
                 prop = col.gameObject.GetComponentInParent<SlimeController>()._proportion;
                 PushButton(prop);
             }
-        }
-        
+        }  
     }
 
 
@@ -42,23 +35,37 @@ public class Button : MonoBehaviour
     void PushButton(float prop)
     {
         Debug.Log("Pushin");
-        if (prop >= requiredWeight) 
+        if (prop >= requiredWeight)
         {
             pushin = true;
+            door.opening = true;
             if (transform.position.y > targetY)
             {
                 transform.position -= new Vector3(0, prop * Time.deltaTime, 0);
             }
         }
+        else ShowMessage();
  
         
     }
 
-    void SpringBack()
+    void ShowMessage()
     {
-        if (transform.position.y <= yStart)
+      
+        if(!textRendering)
         {
-            transform.position += new Vector3(0, springBackSpeed * Time.deltaTime, 0);
+            text.SetActive(true);
+            textRendering = true;
+            StartCoroutine(KillMessage());
         }
-    }        
+
+    }
+
+
+    IEnumerator KillMessage()
+    {
+        yield return new WaitForSeconds(1f);
+        text.SetActive(false);
+        textRendering = false;
+    }
 }
