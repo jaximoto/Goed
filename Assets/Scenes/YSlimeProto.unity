@@ -6645,7 +6645,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1647511014}
-  - component: {fileID: 1647511013}
   - component: {fileID: 1647511012}
   - component: {fileID: 1647511011}
   m_Layer: 0
@@ -6852,70 +6851,6 @@ SpriteShapeRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.50000006, y: 0.50000006, z: 0}
   m_SpriteSortPoint: 0
---- !u!114 &1647511013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647511010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1634a8de9ffc58b4789c55a7ff4485bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertices:
-  - {x: 0.37109375, y: 0.37109375}
-  - {x: 0.5, y: -0.12890625}
-  - {x: 0.5, y: 0.12890625}
-  - {x: 0.37109375, y: -0.37109375}
-  - {x: 0.12890625, y: 0.5}
-  - {x: 0.12890625, y: -0.5}
-  - {x: -0.12890625, y: 0.5}
-  - {x: -0.12890625, y: -0.5}
-  - {x: -0.37109375, y: 0.37109375}
-  - {x: -0.37109375, y: -0.37109375}
-  - {x: -0.5, y: 0.12890625}
-  - {x: -0.5, y: -0.12890625}
-  sortedVerts:
-  - {x: -0.5, y: -0.12890625, z: 0}
-  - {x: -0.37109375, y: -0.37109375, z: 0}
-  - {x: -0.12890625, y: -0.5, z: 0}
-  - {x: 0.12890625, y: -0.5, z: 0}
-  - {x: 0.37109375, y: -0.37109375, z: 0}
-  - {x: 0.5, y: -0.12890625, z: 0}
-  - {x: 0.5, y: 0.12890625, z: 0}
-  - {x: 0.37109375, y: 0.37109375, z: 0}
-  - {x: 0.12890625, y: 0.5, z: 0}
-  - {x: -0.12890625, y: 0.5, z: 0}
-  - {x: -0.37109375, y: 0.37109375, z: 0}
-  - {x: -0.5, y: 0.12890625, z: 0}
-  points:
-  - {fileID: 775666334}
-  - {fileID: 430141694}
-  - {fileID: 110339217}
-  - {fileID: 406629537}
-  - {fileID: 1797266034}
-  - {fileID: 1762046824}
-  - {fileID: 1923753461}
-  - {fileID: 261019301}
-  - {fileID: 1679208108}
-  - {fileID: 953666741}
-  - {fileID: 460440535}
-  - {fileID: 1094447435}
-  angles:
-  - 14.456741
-  - 45
-  - 75.54324
-  - 104.45676
-  - 135
-  - 165.54326
-  - 194.45674
-  - 225
-  - 255.54324
-  - 284.45676
-  - 315
-  - 345.54327
 --- !u!4 &1647511014
 Transform:
   m_ObjectHideFlags: 0
@@ -14045,16 +13980,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7231341878013939473, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
       propertyPath: angMult
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7231341878013939473, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
       propertyPath: linMult
-      value: 0.5
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7231341878013939473, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
+      propertyPath: angMultLimit
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7231341878013939473, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
       propertyPath: _slimeController
       value: 
       objectReference: {fileID: 1823367204}
+    - target: {fileID: 7694167107151918009, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9013146077486964776, guid: b989b250f06a49146a7217f28932cd0e, type: 3}
       propertyPath: m_Name
       value: AttachedJewel

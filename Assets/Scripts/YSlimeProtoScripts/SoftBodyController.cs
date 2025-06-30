@@ -36,7 +36,7 @@ public class SoftBodyController : MonoBehaviour
             Vector2 vertex = points[i].localPosition * gameObject.transform.localScale.x;
             Vector2 towardsCenter = -vertex.normalized;
 
-            Debug.Log("localPositions ");
+            //Debug.Log("localPositions ");
             //when softbody controller is setup pull radius from there, this is stupid
             float colliderRadius = gameObject.transform.localScale.x * points[i].transform.localScale.x * points[i].gameObject.GetComponent<CircleCollider2D>().radius;
             //Debug.Log($"points[i].gameObject.transform.localScale.x is {points[i].gameObject.transform.localScale.x} and radius is{points[i].gameObject.GetComponent<CircleCollider2D>().radius}");
@@ -46,7 +46,7 @@ public class SoftBodyController : MonoBehaviour
             }
             catch 
             {
-                Debug.Log("Catch");
+                //Debug.Log("Catch");
                 spriteShape.spline.SetPosition(i, vertex - (towardsCenter * (colliderRadius + splineOffset)));
             }
 

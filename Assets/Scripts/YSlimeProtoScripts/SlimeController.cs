@@ -117,7 +117,7 @@ public class SlimeController : MonoBehaviour
 
     // --------------------------UPDATE METHODS------------------
     public GameObject text;
-    bool RDown;
+    
     void Update()
     {
         _time += Time.deltaTime;
@@ -128,18 +128,11 @@ public class SlimeController : MonoBehaviour
 
         _proportion = transform.localScale.x / startSize;
         if (_proportion < 0.5f) {SlimeDeath(); text.SetActive(true);}
-        RDown = Input.GetKeyDown("r");
-        if (deBone && !levelEnding)
-        {
-            RestartLevel();
-        }
+        
+
     }
 
-    void RestartLevel()
-    {
-        Debug.Log($"press r? RDown = {RDown}");
-        if (RDown) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+
 
     private void GatherInput()
     {
@@ -536,6 +529,7 @@ public class SlimeController : MonoBehaviour
             CheckWalkLoss();
             WalkSlimeLoss();
         }
+
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
