@@ -441,8 +441,12 @@ public class SlimeController : MonoBehaviour
             return;
 
         if (_grounded)
+        {
             ExecuteJump();
-
+            SoundManager.PlayRandomSoundPitch(SoundType.JUMP, .25f, true);
+        }
+            
+            
         _jumpToConsume = false;
     }
 
@@ -534,6 +538,7 @@ public class SlimeController : MonoBehaviour
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+            SoundManager.PlayRandomSoundPitch(SoundType.SLIMESTEPS, .25f, false);
             CheckWalkLoss();
             WalkSlimeLoss();
         }

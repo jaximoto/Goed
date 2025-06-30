@@ -70,8 +70,10 @@ public class SoundManager : MonoBehaviour
         instance.SFXSource.PlayOneShot(randomClip, volume);
     }
 
-    public static void PlayRandomSoundPitch(SoundType sound, float volume = 1.0f, float minPitch = 0.9f, float maxPitch = 1.3f)
+    public static void PlayRandomSoundPitch(SoundType sound, float volume = 1.0f, bool interupting = false, float minPitch = 0.9f, float maxPitch = 1.3f)
     {
+
+        if (instance.SFXSource.isPlaying && !interupting) return;
         AudioClip[] clips = instance.soundList[(int)sound].Sounds;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
 

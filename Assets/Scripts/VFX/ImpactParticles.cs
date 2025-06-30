@@ -32,6 +32,8 @@ public class ImpactParticles : MonoBehaviour
         {
             //Debug.Log($"if and diff is {diff}");
             _particleSystem.Play();
+            if (Mathf.Abs(diff) < 18)
+                SoundManager.PlayRandomSoundPitch(SoundType.COLLIDE, .1f, true);
         }
         else
         {

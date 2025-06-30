@@ -262,6 +262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SizeUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2684324047350540028, guid: b01e41e50007dcd4cb3d998e950867a5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c0e9a4126697b404fa85bf6946d7d373, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
