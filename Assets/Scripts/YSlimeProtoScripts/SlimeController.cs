@@ -40,7 +40,6 @@ public class SlimeController : MonoBehaviour
     public float GForce;
 
     public bool levelEnding;
-    
 
     // Jewel Launch 
     public bool deBone; // turn into off taking input???
@@ -73,6 +72,7 @@ public class SlimeController : MonoBehaviour
     //Rebounding Stuff
     public Vector3[] _pointTargets;
     public float reboundStrength, joinCrossStrength, expelStrength;
+    private float startReStrength;
     private bool _currHit, _nextHit;
     
     // Collison
@@ -92,13 +92,14 @@ public class SlimeController : MonoBehaviour
     }
 
     // Put interface for player here:
-
+    private GameObject _dp;
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _col = GetComponent<CircleCollider2D>();
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
-
+        _dp = Resources.Load<GameObject>("DeathParticles");
+        Debug.Log($"_dp = {_dp}");
         points = new List<GameObject>();
         // exclude last child which doesnt have rigidbody
         for(int i = 0; i < transform.childCount - 1; i++)
@@ -111,7 +112,7 @@ public class SlimeController : MonoBehaviour
         GetReboundTargets();
 
         startSize = transform.localScale.x;
-
+        startReStrength = reboundStrength;
     }
 
     // --------------------------UPDATE METHODS------------------
@@ -249,23 +250,55 @@ public class SlimeController : MonoBehaviour
         ChargeUp = false;  
     }
 
-    void DeBone()
+
+    //keep track of horizontal distance covered while grounded 
+    void CheckWalkLoss()
     {
-
-        deBone = true;
-        takingInput = false;
-
-        /* used to detach and despring
-        for (int i = 0; i < points.Count; i++)
+        if (_grounded)
         {
-            Debug.Log($"(i = {i}) debone reforce is {points[i].GetComponents<SpringJoint2D>()[0].reactionForce}");
-            points[i].GetComponents<SpringJoint2D>()[0].enabled = false;
+            distanceCovered = Mathf.Abs(_frameVelocity.x * Time.fixedDeltaTime);
+            //Debug.Log($"distanceCovered = {distanceCovered}");
         }
-        gameObject.transform.DetachChildren();
-    
-        */
+    }
+    void WalkSlimeLoss()
+    {
+        Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f) * lossMult;
+        gameObject.transform.localScale -= distanceCovered * loss;
+        UpdateAnchors();
     }
 
+    public float AddSlime(float slime, float drainRate)
+    {
+        if (slime > 0 && _proportion < maxProp)
+        {
+            slime -= drainRate * Time.deltaTime;
+            gameObject.transform.localScale += new Vector3(0.25f, 0.25f, 0.25f) * drainRate * Time.deltaTime;
+            //Debug.Log($"slime = {slime}");
+        }
+        return slime;
+    }
+
+
+    void SlimeDeath()
+    {
+        if (!deBone) Instantiate(_dp, gameObject.transform.position, Quaternion.identity);
+        deBone = true;
+        takingInput = false;
+        if (reboundStrength > 0) reboundStrength -= 10 * Time.deltaTime;
+        if (reboundStrength <= 0) gameObject.SetActive(false);
+    }
+
+    void Reslime()
+    {
+        if (reboundStrength < startReStrength)
+        {
+            reboundStrength += 10 * Time.deltaTime;
+        }
+        if (reboundStrength >= startReStrength)
+        {
+            reboundStrength = startReStrength;
+        }
+    }
     //Scale multiplier for each joint
     void ConfigureAnchors()
     {
@@ -307,23 +340,6 @@ public class SlimeController : MonoBehaviour
                 points[i].GetComponents<SpringJoint2D>()[j].anchor = _anchors[i][j];
                 points[i].GetComponents<SpringJoint2D>()[j].distance = _distance[i][j];
             }
-        }
-    }
-
-    void WalkSlimeLoss()
-    {
-        Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f);
-        gameObject.transform.localScale -= distanceCovered * loss;
-        UpdateAnchors();
-    }
-
-    //keep track of horizontal distance covered while grounded 
-    void CheckWalkLoss()
-    {
-        if (_grounded)
-        {
-            distanceCovered = Mathf.Abs(_frameVelocity.x * Time.fixedDeltaTime);
-            //Debug.Log($"distanceCovered = {distanceCovered}");
         }
     }
 
@@ -413,21 +429,6 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-    public float AddSlime(float slime, float drainRate)
-    {
-        if (slime > 0 && _proportion  < maxProp)
-        {
-            slime -= drainRate * Time.deltaTime;
-            gameObject.transform.localScale += new Vector3(0.25f,0.25f,0.25f) * drainRate * Time.deltaTime; 
-            //Debug.Log($"slime = {slime}");
-        }
-        return slime;
-    }
-
-    void SlimeDeath()
-    {
-        DeBone();
-    }
 
 
 
