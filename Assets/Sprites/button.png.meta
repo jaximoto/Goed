@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 79944b228b7320a458e0288aaf0d4955
+guid: e0e45e90f70577b4c992bf3069e4e6eb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8521086472891896741
-    second: newpipe_0
-  - first:
-      213: 1742086206703362946
-    second: newpipe_1
-  - first:
-      213: -3127266398768129945
-    second: newpipe_2
-  - first:
-      213: 8740788228563381309
-    second: newpipe_3
-  - first:
-      213: 5802573194985595954
-    second: newpipe_4
+      213: 2530564911472380330
+    second: button_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,6 +84,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -134,30 +135,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: newpipe_0
+      name: button_0
       rect:
         serializedVersion: 2
-        x: 770
-        y: 940
-        width: 7
-        height: 8
+        x: 1539
+        y: 801
+        width: 259
+        height: 53
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,96 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a39b1d100bf04670800000000000000
-      internalID: 8521086472891896741
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: newpipe_1
-      rect:
-        serializedVersion: 2
-        x: 411
-        y: 566
-        width: 11
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 28369aecc222d2810800000000000000
-      internalID: 1742086206703362946
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: newpipe_2
-      rect:
-        serializedVersion: 2
-        x: 754
-        y: 505
-        width: 580
-        height: 101
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 768196f77c7b994d0800000000000000
-      internalID: -3127266398768129945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: newpipe_3
-      rect:
-        serializedVersion: 2
-        x: 765
-        y: 505
-        width: 7
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d3caf6c45948d4970800000000000000
-      internalID: 8740788228563381309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: newpipe_4
-      rect:
-        serializedVersion: 2
-        x: 987
-        y: 108
-        width: 90
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 234e156d391e68050800000000000000
-      internalID: 5802573194985595954
+      spriteID: aa90165216f5e1320800000000000000
+      internalID: 2530564911472380330
       vertices: []
       indices: 
       edges: []
@@ -273,12 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      newpipe_0: 8521086472891896741
-      newpipe_1: 1742086206703362946
-      newpipe_2: -3127266398768129945
-      newpipe_3: 8740788228563381309
-      newpipe_4: 5802573194985595954
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
