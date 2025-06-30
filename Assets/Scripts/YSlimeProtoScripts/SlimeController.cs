@@ -40,6 +40,7 @@ public class SlimeController : MonoBehaviour
     public float GForce;
 
     public bool levelEnding;
+    
 
     // Jewel Launch 
     public bool deBone; // turn into off taking input???
@@ -114,6 +115,7 @@ public class SlimeController : MonoBehaviour
     }
 
     // --------------------------UPDATE METHODS------------------
+    public GameObject text;
     bool RDown;
     void Update()
     {
@@ -124,7 +126,7 @@ public class SlimeController : MonoBehaviour
         }
 
         _proportion = transform.localScale.x / startSize;
-        if (_proportion < 0.5f) SlimeDeath();
+        if (_proportion < 0.5f) {SlimeDeath(); text.SetActive(true);}
         RDown = Input.GetKeyDown("r");
         if (deBone && !levelEnding)
         {
