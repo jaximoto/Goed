@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class Grate : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float grateLoss;
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (collision.gameObject.layer == 6)
+        {
+            if (collision.gameObject.GetComponentInParent<SlimeController>())
+            {
+                collision.gameObject.GetComponentInParent<SlimeController>().GrateSlimeLoss(grateLoss);
+                
+            }
+        }
     }
 }
