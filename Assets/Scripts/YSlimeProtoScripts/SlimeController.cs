@@ -1,12 +1,8 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.WSA;
-using static Unity.VisualScripting.Metadata;
-using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class SlimeController : MonoBehaviour
 {
