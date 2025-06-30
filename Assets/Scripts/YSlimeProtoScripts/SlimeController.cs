@@ -272,7 +272,7 @@ public class SlimeController : MonoBehaviour
     }
 
 
-    void SlimeDeath()
+    public void SlimeDeath()
     {
         if (!deBone) Instantiate(_dp, gameObject.transform.position, Quaternion.identity);
         deBone = true;
