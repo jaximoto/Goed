@@ -1375,6 +1375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: exit (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5470783570055835207, guid: 4a64fd48c1fb1b34291de0a74a1a0a62, type: 3}
+      propertyPath: sceneToLoad
+      value: Level 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5674679748065338282, guid: 4a64fd48c1fb1b34291de0a74a1a0a62, type: 3}
       propertyPath: m_Size.x
       value: 0.41002512
