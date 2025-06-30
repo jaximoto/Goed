@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class Spikes : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.gameObject.layer == 6)
+        if (col.gameObject.layer == 6)
         {
-            if(collision.gameObject.GetComponentInParent<SlimeController>())
+            if(col.gameObject.GetComponentInParent<SlimeController>())
             {
-                collision.gameObject.GetComponentInParent<SlimeController>().SlimeDeath();
+                col.gameObject.GetComponentInParent<SlimeController>().SlimeDeath();
+                col.gameObject.GetComponentInParent<SlimeController>().poked = true;
             }
         }
     }

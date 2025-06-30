@@ -55,6 +55,8 @@ public class SlimeController : MonoBehaviour
     public float jewelAirDeceleration, jewelFallAcceleration, jewelGroundDeceleration;
 
     // Scaling stuff
+    public bool poked, dying;
+
     public float distanceCovered;
     public float lossMult, scaleMult;
 
@@ -124,11 +126,12 @@ public class SlimeController : MonoBehaviour
 
         _proportion = transform.localScale.x / startSize;
         if (_proportion < 0.5f) {SlimeDeath(); text.SetActive(true);}
-        
 
+        if (poked) PokeSlimeLoss(20);
+        if (dying) DyingSlime();
     }
 
-
+ 
 
     private void GatherInput()
     {
@@ -256,6 +259,24 @@ public class SlimeController : MonoBehaviour
         UpdateAnchors();
     }
 
+    public void GrateSlimeLoss(float grateLoss)
+    {
+        Debug.Log("Grating");
+        Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f) * grateLoss;
+        gameObject.transform.localScale -= Time.deltaTime * loss;
+        UpdateAnchors();
+    }
+
+    void PokeSlimeLoss(float pokeLoss)
+    {
+        if(_proportion > 0.5f)
+        {
+            Vector3 loss = new Vector3(0.001f, 0.001f, 0.001f) * pokeLoss;
+            gameObject.transform.localScale -= Time.deltaTime * loss;
+            UpdateAnchors();
+        }
+    }
+
     public float AddSlime(float slime, float drainRate)
     {
         if (slime > 0 && _proportion < maxProp)
@@ -267,14 +288,22 @@ public class SlimeController : MonoBehaviour
         return slime;
     }
 
-
+    void DyingSlime()
+    {
+        if (reboundStrength > 0) reboundStrength -= 10 * Time.deltaTime;
+        if (reboundStrength <= 0) gameObject.SetActive(false);
+    }
     public void SlimeDeath()
     {
         if (!deBone) Instantiate(_dp, gameObject.transform.position, Quaternion.identity);
         deBone = true;
         takingInput = false;
-        if (reboundStrength > 0) reboundStrength -= 10 * Time.deltaTime;
-        if (reboundStrength <= 0) gameObject.SetActive(false);
+        dying = true;
+    }
+
+    public void PokeDeath()
+    {
+
     }
 
     void Reslime()
