@@ -128,7 +128,11 @@ public class SlimeController : MonoBehaviour
         if (_proportion < 0.5f) {SlimeDeath(); text.SetActive(true);}
 
         if (poked) PokeSlimeLoss(20);
-        if (dying) DyingSlime();
+        if (dying)
+        {
+            text.SetActive(true);
+            DyingSlime();
+        }
     }
 
  
